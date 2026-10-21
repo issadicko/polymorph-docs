@@ -16,7 +16,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SCHEMA = JSON.parse(readFileSync(join(ROOT, 'contrats/polymorph-native.schema.json'), 'utf8'));
 
 /** Version of the user-interface SDK provided by the product these contracts describe (NativeManifest::SDK_VERSION). */
-export const SDK_VERSION = '1.0.0';
+export const SDK_VERSION = '1.1.0';
 
 /** Limits of NativeArchive: archive size, uncompressed content, number of files. */
 export const NATIVE_LIMITS = { archive: 20 * 1024 * 1024, uncompressed: 50 * 1024 * 1024, files: 2000 };
@@ -35,8 +35,9 @@ const CONSTRAINT_PATTERN = /^(\^|>=)\d+\.\d+(\.\d+)?$/;
 /** Keys allowed in each object of the manifest (NativeManifest::KEYS); any other key is rejected, with its path. */
 export const MANIFEST_KEYS = {
   manifest: ['$schema', 'format', 'type', 'id', 'version', 'name', 'description', 'publisher', 'compatibility', 'dependencies',
-    'permissions', 'roles', 'backend', 'ui', 'application', 'translations'],
+    'permissions', 'roles', 'settings', 'backend', 'ui', 'application', 'translations'],
   compatibility: ['polymorph', 'php'],
+  setting: ['code', 'label', 'help', 'type', 'options', 'required', 'default', 'ui'],
   backend: ['class'],
   ui: ['module', 'sdk'],
   application: ['name', 'short_name', 'tint', 'pictogram', 'screens'],
@@ -44,6 +45,24 @@ export const MANIFEST_KEYS = {
   screen: ['label', 'icon', 'path', 'permission'],
   shape: ['element', 'color', 'x', 'y', 'width', 'height', 'rx', 'cx', 'cy', 'r', 'd', 'opacity'],
   translations: ['ar', 'en'],
+};
+
+/**
+ * Is this default value valid for the setting's type? The same rules as the custom fields on the server
+ * (ChampsPersonnalises::normaliser); an empty value means "no default".
+ */
+const SETTING_DEFAULT_CHECKS = {
+  TEXTE: (v) => isScalar(v) && String(v).trim().length <= 255,
+  TELEPHONE: (v) => isScalar(v) && String(v).trim().length <= 30,
+  NOMBRE: (v) => (typeof v === 'number' && Number.isFinite(v)) || (typeof v === 'string' && v.trim() !== '' && Number.isFinite(Number(v))),
+  DATE: (v) => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}/.test(v) && isCalendarDate(v.slice(0, 10)),
+  LISTE: (v, options) => isScalar(v) && asArray(options).includes(String(v)),
+  OUI_NON: (v) => [true, false, 1, 0, '1', '0', 'true', 'false'].includes(v),
+};
+const isScalar = (v) => ['string', 'number', 'boolean'].includes(typeof v);
+const isCalendarDate = (day) => {
+  const date = new Date(`${day}T00:00:00Z`);
+  return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === day;
 };
 
 const validateSchema = new Ajv2020({ allErrors: true, strict: false }).compile(SCHEMA);
@@ -213,6 +232,19 @@ export function checkNative(files, { productVersion, reserved, schemaMessage }) 
       errors.push(`application.screens[${i}].permission : la permission « ${screen.permission} » n’est pas déclarée par l’extension.`);
     }
   }
+  const codes = new Set();
+  for (const [i, setting] of asArray(manifest.settings).entries()) {
+    if (!setting || typeof setting !== 'object') continue;
+    if (typeof setting.code === 'string') {
+      if (codes.has(setting.code)) errors.push(`settings[${i}].code : « ${setting.code} » est déjà utilisé.`);
+      codes.add(setting.code);
+    }
+    const valid = SETTING_DEFAULT_CHECKS[setting.type];
+    const empty = setting.default === undefined || setting.default === null || (typeof setting.default === 'string' && setting.default.trim() === '');
+    if (valid && !empty && !valid(setting.default, setting.options)) {
+      errors.push(`settings[${i}].default : valeur par défaut invalide pour le type ${setting.type}.`);
+    }
+  }
   const mark = id.replaceAll('-', '_');
   for (const name of files.keys()) {
     if (name.startsWith('backend/database/migrations/') && !name.split('/').pop().includes(mark)) {
@@ -241,6 +273,7 @@ function unknownKeys(m) {
   reject(m.backend, 'backend', 'backend');
   reject(m.ui, 'ui', 'ui');
   reject(m.translations, 'translations', 'translations');
+  asArray(m.settings).forEach((s, i) => reject(s, 'setting', `settings[${i}]`));
   const application = m.application;
   if (application && typeof application === 'object' && !Array.isArray(application)) {
     reject(application, 'application', 'application');

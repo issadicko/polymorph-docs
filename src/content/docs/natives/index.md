@@ -25,6 +25,7 @@ Elle en écarte trois défauts : le code non signé, l'héritage d'écrans par X
 | Des **commandes** artisan | `php artisan infirmary:summary` | [Le code serveur](serveur/) |
 | Des **sources de rapports** personnalisés | « Visites à l'infirmerie » | [Le code serveur](serveur/) |
 | Des **écouteurs** et des relations ajoutées au cœur | `$learner->infirmaryVisits` | [Le code serveur](serveur/) |
+| Des **réglages**, saisis par chaque établissement | le téléphone de l'infirmerie, le rappel du soir | [Le manifeste natif](manifeste/) |
 | Des **droits**, des **dépendances**, des **traductions** | le secrétariat saisit, la direction consulte | [Le manifeste natif](manifeste/) |
 
 ## Native ou déclarative ?
@@ -48,7 +49,7 @@ Une plateforme Polymorph héberge plusieurs établissements, chacun dans son pro
 | Qui | l'exploitant de la plateforme | l'administrateur de l'établissement |
 | Geste | **déployer** le code : `php artisan extension:deploy infirmary-1.0.0.poly` | **installer** l'extension, comme un module : Paramétrage → Modules |
 | Effet | contrôle de la signature et de l'archive, copie du code | tables dans le schéma de l'établissement, droits, rôles, activation |
-| Annulation | `php artisan extension:remove`, quand plus aucun établissement ne l'utilise | désactiver (les données restent), purger (en ligne de commande) |
+| Annulation | `php artisan extension:rollback`, retour à la version précédente ; `php artisan extension:remove`, quand plus aucun établissement ne l'utilise | désactiver (les données restent), purger (en ligne de commande) |
 
 Une fois déployée, l'extension **est un module** : elle apparaît dans Paramétrage → Modules à côté de Transport, avec son éditeur et le titulaire de la clé qui l'a signée.
 

@@ -55,15 +55,16 @@ class Card extends HTMLElement {
 
 ## Le SDK, version 1
 
-Le SDK est figé : une extension ne peut pas le modifier pour une autre.
+Le SDK est figé : une extension ne peut pas le modifier pour une autre. Une version 1.x ne fait qu'ajouter des membres ; la version actuelle est la 1.1.0. Une interface qui utilise `setting` demande `"sdk": "^1.1"` dans le manifeste.
 
 | Membre | Rôle |
 |---|---|
-| `version` | version du SDK, `1.0.0` |
+| `version` | version du SDK, `1.1.0` |
 | `extension` | `{ id, version }` de l'extension |
 | `api.get(path, params?)`, `api.post(path, body?)`, `api.put(…)`, `api.delete(path)` | appels à l'API avec la session de l'utilisateur. `path` relatif à `/api/v1/modules/<id>/`, ou absolu sous `/api/v1/` (`/api/v1/apprenants/recherche`) ; toute autre adresse est refusée |
 | `user` | l'utilisateur connecté : `{ id, name, email, roles }` |
 | `can(permission)` | vrai si l'utilisateur a la permission (`a\|b` : l'une ou l'autre) |
+| `setting(code)` | depuis 1.1.0 : la valeur d'un réglage de l'extension marqué `ui`, saisie par l'établissement, ou sa valeur par défaut ; `null` pour un autre code ([les réglages](../manifeste/#réglages)) |
 | `locale`, `direction` | `fr`, `ar` ou `en` ; `ltr` ou `rtl` |
 | `t(text, values?)` | le texte traduit par l'extension (traductions du manifeste), `:nom` remplacé par `values.nom` |
 | `navigate(link)` | lien absolu (`/apprenants/12`) ou relatif aux écrans de l'extension (`reasons`) |
@@ -108,7 +109,7 @@ Les éléments s'affichent dans la page, sans *shadow DOM* imposé. Ils hériten
 
 | Classes | Pour |
 |---|---|
-| `pm-screen`, `pm-header`, `pm-title`, `pm-toolbar`, `pm-end` | la mise en page d'un écran : en-tête avec titre et actions, barre de boutons |
+| `pm-screen`, `pm-header`, `pm-title`, `pm-subtitle` (depuis 1.1.0), `pm-toolbar`, `pm-end` | la mise en page d'un écran : en-tête avec titre, sous-titre et actions, barre de boutons |
 | `pm-card`, `pm-card-title` | une carte, comme celles des fiches |
 | `pm-grid`, `pm-full` | une grille de formulaire, un champ sur toute la largeur |
 | `pm-field`, `pm-inline` | un libellé et son champ natif (`input`, `select`, `textarea`), aux dimensions du produit |

@@ -60,6 +60,12 @@ const CASES = {
   'unknown pictogram colour': [(m) => { m.application.pictogram[0].color = 'blanc'; return m; }, {}, /application\.pictogram\[0\]\.color : valeur non reconnue/],
   'unknown key in backend': [(m) => ({ ...m, backend: { classe: m.backend.class } }), {}, /backend : clé non prévue \(« classe »\)/],
   'neither backend nor ui': [({ backend: _b, ui: _u, application: _a, ...m }) => m, {}, /apporte du code : « backend », « ui »/],
+  'duplicate setting code': [(m) => ({ ...m, settings: [...m.settings, { code: 'phone', label: 'Autre', type: 'TEXTE' }] }), {}, /settings\[2\]\.code : « phone » est déjà utilisé/],
+  'default of the wrong type': [(m) => { m.settings[1].default = 'peut-être'; return m; }, {}, /settings\[1\]\.default : valeur par défaut invalide pour le type OUI_NON/],
+  'invalid default date': [(m) => ({ ...m, settings: [{ code: 'start', label: 'Début', type: 'DATE', default: '2026-02-30' }] }), {}, /settings\[0\]\.default : valeur par défaut invalide pour le type DATE/],
+  'list without options': [(m) => ({ ...m, settings: [{ code: 'level', label: 'Niveau', type: 'LISTE' }] }), {}, /settings\[0\] : la clé « options » est obligatoire/],
+  'default outside the list': [(m) => ({ ...m, settings: [{ code: 'level', label: 'Niveau', type: 'LISTE', options: ['Bas', 'Haut'], default: 'Moyen' }] }), {}, /settings\[0\]\.default : valeur par défaut invalide pour le type LISTE/],
+  'unknown key in a setting': [(m) => { m.settings[0].libelle = 'Téléphone'; return m; }, {}, /settings\[0\] : clé non prévue \(« libelle »\)/],
   'unreadable SIGNATURE': [(m) => m, { SIGNATURE: '{"format":1,"cle":"x","signature":"y"}' }, /SIGNATURE est illisible/],
 };
 for (const [name, [modify, added, expected]] of Object.entries(CASES)) {

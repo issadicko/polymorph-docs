@@ -35,6 +35,8 @@ Elle étend `App\Modules\Native\NativeExtension`. Identité, droits, rôles, dé
 | `reportSources()` | rapports d'Odoo | à chaque liste de sources | sources des rapports personnalisés |
 | `models()` | | au démarrage | alias des modèles pour le journal d'activité |
 
+La classe de base fournit aussi `setting(string $code)`, inspirée de `get_option` de WordPress : la valeur d'un réglage dans l'établissement courant, celle saisie dans Paramétrage → Modules ou sa valeur par défaut. Elle s'appelle, elle ne se surcharge pas. Voir [les réglages du manifeste](../manifeste/#réglages).
+
 `install()`, `upgrade()` et `uninstall()` s'exécutent **dans la transaction** de l'installation : une exception annule tout.
 
 ```php

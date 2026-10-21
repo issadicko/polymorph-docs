@@ -14,8 +14,12 @@
     "infirmary.manage": "Enregistrer et modifier les visites à l'infirmerie"
   },
   "roles": { "DIRECTION": ["infirmary.view"], "SECRETARIAT": ["infirmary.view", "infirmary.manage"] },
+  "settings": [
+    { "code": "phone", "label": "Téléphone de l'infirmerie", "help": "Affiché en tête de l'écran des visites.", "type": "TELEPHONE", "ui": true },
+    { "code": "evening_reminder", "label": "Rappel du soir", "help": "Chaque soir de semaine, à 17 h 30, le journal note les visites du jour sans parent prévenu.", "type": "OUI_NON", "default": true }
+  ],
   "backend": { "class": "PolymorphExt\\Infirmary\\Extension" },
-  "ui": { "module": "ui/index.js", "sdk": "^1.0" },
+  "ui": { "module": "ui/index.js", "sdk": "^1.1" },
   "application": {
     "name": "Infirmerie",
     "tint": { "tile": "#fde4e4", "plate": "#e5484d", "edge": "#b8323a", "detail": "#8f1f27" },
@@ -35,6 +39,10 @@
       "Visites à l'infirmerie : motif, soins, orientation et parent prévenu, avec une carte sur la fiche de l'apprenant.": "Infirmary visits: reason, care, outcome and parent informed, with a card on the learner's record.",
       "Consulter les visites à l'infirmerie": "View infirmary visits",
       "Enregistrer et modifier les visites à l'infirmerie": "Record and edit infirmary visits",
+      "Téléphone de l'infirmerie": "Infirmary phone",
+      "Affiché en tête de l'écran des visites.": "Shown at the top of the visits screen.",
+      "Rappel du soir": "Evening reminder",
+      "Chaque soir de semaine, à 17 h 30, le journal note les visites du jour sans parent prévenu.": "Every weekday evening at 5:30 pm, the log records the day's visits without the parent informed.",
       "Visites": "Visits",
       "Motifs": "Reasons",
       "Nouvelle visite": "New visit",
@@ -75,6 +83,10 @@
       "Visites à l'infirmerie : motif, soins, orientation et parent prévenu, avec une carte sur la fiche de l'apprenant.": "زيارات العيادة المدرسية: السبب والعلاج والتوجيه وإبلاغ ولي الأمر، مع بطاقة في ملف المتعلم.",
       "Consulter les visites à l'infirmerie": "الاطلاع على زيارات العيادة",
       "Enregistrer et modifier les visites à l'infirmerie": "تسجيل زيارات العيادة وتعديلها",
+      "Téléphone de l'infirmerie": "هاتف العيادة",
+      "Affiché en tête de l'écran des visites.": "يظهر في أعلى شاشة الزيارات.",
+      "Rappel du soir": "تذكير المساء",
+      "Chaque soir de semaine, à 17 h 30, le journal note les visites du jour sans parent prévenu.": "كل مساء من أيام الأسبوع، الساعة 17:30، يسجّل السجلّ زيارات اليوم التي لم يُبلَّغ فيها ولي الأمر.",
       "Visites": "الزيارات",
       "Motifs": "الأسباب",
       "Nouvelle visite": "زيارة جديدة",

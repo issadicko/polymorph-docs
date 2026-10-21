@@ -51,10 +51,16 @@ class Extension extends NativeExtension
         DB::table('activity_log')->where('log_name', 'infirmary')->delete();
     }
 
-    /** Every weekday evening, in each établissement where the extension is active: today's visits without the parent informed. */
+    /**
+     * Every weekday evening, in each établissement where the extension is active: today's visits without the parent
+     * informed. The « evening_reminder » setting (manifest) turns it off in an établissement.
+     */
     public function schedule(ModuleSchedule $schedule): void
     {
         $schedule->task('parents-to-notify', function () {
+            if (! $this->setting('evening_reminder')) {
+                return;
+            }
             $visits = Visit::query()->whereDate('occurred_at', today())->where('parent_informed', false)
                 ->where('outcome', '!=', Visit::BACK_TO_CLASS)->pluck('id');
             if ($visits->isNotEmpty()) {

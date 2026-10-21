@@ -100,6 +100,20 @@ ou, établissement par établissement, le bouton **Mettre à jour** de Paramétr
 
 L'interface est servie à une adresse qui porte la version : les navigateurs chargent la nouvelle au rechargement de la page.
 
+## Revenir à la version précédente
+
+```bash
+php artisan extension:rollback infirmary
+```
+
+La version précédente reste sur le disque après chaque déploiement (`extension:deployed` l'affiche). Le retour arrière la remet en service :
+
+- **avec les contrôles d'un déploiement** : archive, manifeste, signature par une clé non révoquée, compatibilité et dépendances ;
+- **dans chaque établissement passé à la version courante**, les migrations que la version précédente n'a pas sont annulées par leur `down()`, de la plus récente à la plus ancienne. Écrivez donc les `down()` : une migration déjà passée sans `down()` fait refuser le retour ;
+- **tout ou rien** : tous les établissements et le registre changent ensemble ; une erreur annule le retour entier.
+
+Ce qui n'est pas défait : les reprises de données faites par `upgrade()`, et les réglages que seule la version retirée déclarait (leurs valeurs restent, ignorées). Pour remettre la version retirée, redéployez-la.
+
 ## Retirer
 
 ```bash

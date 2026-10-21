@@ -169,3 +169,7 @@ php artisan extension:deploy /tmp/infirmary-1.0.0.poly
 Puis, dans l'établissement : **Paramétrage → Modules → Infirmerie → Installer**. La tuile apparaît sur l'accueil des utilisateurs qui ont `infirmary.view`.
 
 Pour livrer à une plateforme réelle, signez d'abord : [Signer, livrer, déployer](../livrer/).
+
+## Aller plus loin : des réglages
+
+L'exemple complet ajoute deux réglages, saisis par chaque établissement dans **Paramétrage → Modules → Réglages** : le téléphone de l'infirmerie, affiché sur l'écran des visites (`polymorph.setting('phone')`, d'où `"sdk": "^1.1"`), et le rappel du soir, que la tâche planifiée consulte (`$this->setting('evening_reminder')`). Voir [les réglages du manifeste](../manifeste/#réglages).

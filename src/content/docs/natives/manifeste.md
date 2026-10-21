@@ -49,6 +49,29 @@ Les clés sont en anglais ; les textes affichés sont en français, traduits par
 - 50 permissions au plus, chacune écrite `<id>.<action>`.
 - `roles` donne des permissions de l'extension aux rôles du produit, **à la première installation seulement** : l'établissement les ajuste ensuite. Rôles possibles : `DIRECTION`, `SECRETARIAT`, `CAISSE`, `RESP_PEDAGOGIQUE`, `ENSEIGNANT`. L'administrateur a toujours tout.
 
+## Réglages
+
+```json
+"settings": [
+  { "code": "phone", "label": "Téléphone de l'infirmerie", "help": "Affiché en tête de l'écran des visites.", "type": "TELEPHONE", "ui": true },
+  { "code": "evening_reminder", "label": "Rappel du soir", "type": "OUI_NON", "default": true }
+]
+```
+
+Les réglages sont les options de l'extension, comme celles de WordPress : chaque établissement les saisit dans **Paramétrage → Modules → Réglages**, une fois l'extension installée. 30 réglages au plus.
+
+| Clé | Valeur |
+|---|---|
+| `code` | identifiant du réglage, unique dans l'extension : minuscules, chiffres et `_` |
+| `label`, `help` | libellé et aide, en français, traduits par `translations` |
+| `type` | un type des champs personnalisés : `TEXTE`, `NOMBRE`, `DATE`, `LISTE`, `OUI_NON`, `TELEPHONE` |
+| `options` | les valeurs proposées, pour le type `LISTE` (obligatoire alors) |
+| `required` | la saisie exige une valeur |
+| `default` | la valeur tant que l'établissement n'en a pas saisi, et quand le champ est vidé ; contrôlée contre le type au déploiement |
+| `ui` | la valeur est transmise à l'interface (`polymorph.setting`). Par défaut, elle reste sur le serveur |
+
+Le PHP de l'extension lit un réglage avec `$this->setting('evening_reminder')`, son interface avec `polymorph.setting('phone')` pour les seuls réglages marqués `ui` ([L'interface et le SDK](../interface/)). Un réglage `ui` est lisible par tout utilisateur connecté de l'établissement : une clé d'API reste un réglage sans `ui`, lu par le PHP.
+
 ## Code
 
 ```json
@@ -107,4 +130,5 @@ Texte français → traduction, 1 000 entrées au plus par langue. Elles servent
 - les fichiers : la classe et le module de l'interface existent ; aucun fichier hors des règles de l'archive ;
 - le nom de chaque migration contient l'identifiant (`_` à la place de `-`) ;
 - la compatibilité avec le produit, PHP et les dépendances présentes sur la plateforme ;
+- les réglages : codes uniques, valeur par défaut valide pour son type ;
 - aucune extension déclarative du même identifiant n'est installée dans un établissement.

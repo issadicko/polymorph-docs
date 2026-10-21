@@ -2,7 +2,7 @@
  * User interface of the Infirmary extension: custom elements, with no build step and no library.
  * Polymorph calls activate(polymorph) once, then sets two properties on each element:
  * - context: the slot's context ({ apprenant } on the learner record), or { params, query } for a screen;
- * - polymorph: the SDK (api, t, can, notify, confirm, date, navigate…).
+ * - polymorph: the SDK (api, t, can, setting, notify, confirm, date, navigate…).
  * The elements render in the page DOM: they take the product's font, colours and pm-* classes.
  */
 
@@ -136,10 +136,15 @@ class Visits extends InfirmaryElement {
 
   render() {
     const canManage = this.polymorph.can('infirmary.manage');
+    // Setting of the établissement (manifest « settings », "ui": true), entered in Paramétrage → Modules.
+    const phone = this.polymorph.setting('phone');
     this.innerHTML = `
       <div class="pm-screen">
         <header class="pm-header">
-          <h1 class="pm-title">${this.t('Visites')}</h1>
+          <div>
+            <h1 class="pm-title">${this.t('Visites')}</h1>
+            ${phone ? `<p class="pm-subtitle"><i class="pi pi-phone" aria-hidden="true"></i> ${this.t('Téléphone de l\'infirmerie')} : ${escape(phone)}</p>` : ''}
+          </div>
           <div class="pm-toolbar">
             <label class="pm-field pm-inline">${this.t('Du')} <input type="date" name="from" value="${this.from}" max="${this.to}"></label>
             <label class="pm-field pm-inline">${this.t('Au')} <input type="date" name="to" value="${this.to}" min="${this.from}"></label>

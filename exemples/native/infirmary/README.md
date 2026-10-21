@@ -8,13 +8,13 @@ en arabe et en anglais.
 
 | Apport | Fichier |
 |---|---|
-| Manifeste : identité, permissions, rôles, tuile, traductions | `polymorph.json` |
-| Classe de l'extension : relation ajoutée au modèle Apprenant, cycle de vie, tâche planifiée, commande, source de rapport | `backend/src/Extension.php` |
+| Manifeste : identité, permissions, rôles, réglages, tuile, traductions | `polymorph.json` |
+| Classe de l'extension : relation ajoutée au modèle Apprenant, cycle de vie, tâche planifiée (coupée par un réglage), commande, source de rapport | `backend/src/Extension.php` |
 | Tables préfixées `infirmary_` | `backend/database/migrations/` |
 | API sous `/api/v1/modules/infirmary` | `backend/routes/api.php`, `backend/src/Http/` |
 | Source « Visites à l'infirmerie » des rapports personnalisés | `backend/src/Reports/VisitsSource.php` |
 | Commande `php artisan infirmary:summary` | `backend/src/Commands/Summary.php` |
-| Écrans Visites et Motifs, carte de la fiche apprenant | `ui/index.js` |
+| Écrans Visites (avec le téléphone de l'infirmerie, un réglage) et Motifs, carte de la fiche apprenant | `ui/index.js` |
 
 ## Essayer en développement
 
@@ -32,7 +32,7 @@ seulement avec `APP_ENV=local`) :
 php artisan extension:deploy /tmp/infirmary-1.0.0.poly
 ```
 
-Puis, dans l'établissement : Paramétrage → Modules → Infirmerie → Installer.
+Puis, dans l'établissement : Paramétrage → Modules → Infirmerie → Installer. Le bouton Réglages saisit ensuite le téléphone de l'infirmerie et coupe, si besoin, le rappel du soir.
 
 ## Signer pour la production
 
