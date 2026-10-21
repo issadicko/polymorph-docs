@@ -1,16 +1,19 @@
 ---
 title: Polymorph documentation
-description: Polymorph, the platform that takes the shape of your institution. Guides to adapt it, starting with extensions.
+description: Polymorph, the platform that takes the shape of your institution. Guides to extend it, starting with native extensions.
 template: splash
 hero:
   title: Polymorph documentation
-  tagline: The platform that takes the shape of your institution. These guides explain how to adapt it, starting with the extensions a publisher can write and deliver to an institution.
+  tagline: The platform that takes the shape of your institution. These guides explain how to extend it, starting with native extensions, which bring their own PHP code, tables, API and screens.
   image:
     file: ../../../assets/logo.svg
   actions:
-    - text: Write an extension
-      link: extensions/
+    - text: Write a native extension
+      link: natives/
       icon: right-arrow
+    - text: Declarative extension
+      link: extensions/
+      variant: secondary
     - text: See the examples
       link: https://github.com/issadicko/polymorph-docs/tree/main/exemples
       icon: external
@@ -19,14 +22,27 @@ hero:
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-## Where to start
-
 The guides are written in French first. Until they are translated, the pages below show the French text.
 
+## Native extensions
+
+PHP code and a user interface, in a signed archive: their own tables, an API, free-form screens, cards on the records, scheduled tasks. The platform operator deploys it, and each institution installs it as a module.
+
 <CardGrid>
-  <LinkCard title="Extensions" description="What an extension adds to an institution, and what it cannot do." href="extensions/" />
-  <LinkCard title="Your first extension" description="A textbook loan register, from the manifest to installation, step by step." href="extensions/premiere-extension/" />
-  <LinkCard title="The manifest" description="Every key of polymorph.json, its values and its limits." href="extensions/manifeste/" />
+  <LinkCard title="Native extensions" description="What they bring, from the publisher to the institution, and why they are signed." href="natives/" />
+  <LinkCard title="Your first native extension" description="An institution's infirmary, from the manifest to deployment, step by step." href="natives/premiere-extension/" />
+  <LinkCard title="Server code" description="Lifecycle, tables, API, scheduled tasks, commands and report sources." href="natives/serveur/" />
+  <LinkCard title="Interface and SDK" description="Screens and cards as custom elements, the version 1 SDK and the pm-* classes." href="natives/interface/" />
+  <LinkCard title="Sign, ship, deploy" description="Publisher keys, signature, the platform keyring, upgrades and removal." href="natives/livrer/" />
+</CardGrid>
+
+## Declarative extensions
+
+For simpler needs, with no compiled code: data, generated entry screens, cards and scripts, described in a JSON manifest. The institution's administrator installs it themselves.
+
+<CardGrid>
+  <LinkCard title="Declarative extensions" description="What a declarative extension adds to an institution, and what it cannot do." href="extensions/" />
+  <LinkCard title="Your first declarative extension" description="A textbook loan register, from the manifest to installation, step by step." href="extensions/premiere-extension/" />
   <LinkCard title="Scripts and hooks" description="Adjust a fee, check an enrolment, send a text message after a payment." href="extensions/hooks/" />
 </CardGrid>
 

@@ -27,6 +27,18 @@ Elle en écarte trois défauts : le code non signé, l'héritage d'écrans par X
 | Des **écouteurs** et des relations ajoutées au cœur | `$learner->infirmaryVisits` | [Le code serveur](serveur/) |
 | Des **droits**, des **dépendances**, des **traductions** | le secrétariat saisit, la direction consulte | [Le manifeste natif](manifeste/) |
 
+## Native ou déclarative ?
+
+L'extension native est la voie complète : elle fait tout ce que fait un module du produit. Pour un besoin plus simple (des données, des écrans de saisie générés, des cartes sur les fiches, des scripts sur les hooks), une [extension déclarative](../extensions/) suffit. Elle ne contient aucun code compilé, et l'administrateur de l'établissement l'installe lui-même, sans passer par l'exploitant de la plateforme.
+
+| | Extension native | Extension déclarative |
+|---|---|---|
+| Écrite par | un éditeur dont la clé est de confiance | n'importe quel éditeur |
+| Contenu | du code PHP, une interface JavaScript, un manifeste | un manifeste JSON et des scripts KodiScript |
+| Livraison | une archive `.poly` signée, déployée par l'exploitant de la plateforme | une archive `.poly`, téléversée par l'établissement |
+| Installation | Paramétrage → Modules, comme un module | Paramétrage → Modules → Extensions |
+| Pouvoir | ses tables, son API, ses écrans, ses tâches planifiées | ce que le manifeste sait décrire |
+
 ## Deux niveaux : la plateforme, puis l'établissement
 
 Une plateforme Polymorph héberge plusieurs établissements, chacun dans son propre schéma de base de données. Une extension native passe par deux gestes, faits par deux personnes :

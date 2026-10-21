@@ -1,16 +1,19 @@
 ---
 title: Documentation de Polymorph
-description: Polymorph, la plateforme qui prend la forme de votre établissement. Guides pour l'adapter, à commencer par les extensions.
+description: Polymorph, la plateforme qui prend la forme de votre établissement. Guides pour l'étendre, à commencer par les extensions natives.
 template: splash
 hero:
   title: Documentation de Polymorph
-  tagline: La plateforme qui prend la forme de votre établissement. Ces guides expliquent comment l'adapter, à commencer par les extensions qu'un éditeur peut écrire et livrer à un établissement.
+  tagline: La plateforme qui prend la forme de votre établissement. Ces guides expliquent comment l'étendre, à commencer par les extensions natives, qui apportent leur code PHP, leurs tables, leur API et leurs écrans.
   image:
     file: ../../assets/logo.svg
   actions:
-    - text: Écrire une extension
-      link: extensions/
+    - text: Écrire une extension native
+      link: natives/
       icon: right-arrow
+    - text: Extension déclarative
+      link: extensions/
+      variant: secondary
     - text: Voir les exemples
       link: https://github.com/issadicko/polymorph-docs/tree/main/exemples
       icon: external
@@ -19,14 +22,26 @@ hero:
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-## Par où commencer
+## Extensions natives
+
+Du code PHP et une interface, en archive signée : des tables propres, une API, des écrans libres, des cartes sur les fiches, des tâches planifiées. L'exploitant de la plateforme la déploie, chaque établissement l'installe comme un module.
 
 <CardGrid>
-  <LinkCard title="Les extensions" description="Ce qu'une extension ajoute à un établissement, et ce qu'elle ne peut pas faire." href="extensions/" />
-  <LinkCard title="Votre première extension" description="Un prêt de manuels, du manifeste à l'installation, étape par étape." href="extensions/premiere-extension/" />
-  <LinkCard title="Le manifeste" description="Chaque clé de polymorph.json, ses valeurs et ses limites." href="extensions/manifeste/" />
+  <LinkCard title="Les extensions natives" description="Ce qu'elles apportent, de l'éditeur à l'établissement, et pourquoi elles sont signées." href="natives/" />
+  <LinkCard title="Votre première extension native" description="L'infirmerie d'un établissement, du manifeste au déploiement, étape par étape." href="natives/premiere-extension/" />
+  <LinkCard title="Le code serveur" description="Cycle de vie, tables, API, tâches planifiées, commandes et sources de rapports." href="natives/serveur/" />
+  <LinkCard title="L'interface et le SDK" description="Écrans et cartes en éléments personnalisés, le SDK version 1 et les classes pm-*." href="natives/interface/" />
+  <LinkCard title="Signer, livrer, déployer" description="Clés de l'éditeur, signature, trousseau de la plateforme, mise à jour et retrait." href="natives/livrer/" />
+</CardGrid>
+
+## Extensions déclaratives
+
+Pour un besoin plus simple, sans code compilé : des données, des écrans de saisie générés, des cartes et des scripts, décrits dans un manifeste JSON. L'administrateur de l'établissement l'installe lui-même.
+
+<CardGrid>
+  <LinkCard title="Les extensions déclaratives" description="Ce qu'une extension déclarative ajoute à un établissement, et ce qu'elle ne peut pas faire." href="extensions/" />
+  <LinkCard title="Votre première extension déclarative" description="Un prêt de manuels, du manifeste à l'installation, étape par étape." href="extensions/premiere-extension/" />
   <LinkCard title="Scripts et hooks" description="Ajuster un tarif, contrôler une inscription, prévenir par SMS." href="extensions/hooks/" />
-  <LinkCard title="Les extensions natives" description="Du code PHP et une interface : ses tables, son API, ses écrans, en archive signée." href="natives/" />
 </CardGrid>
 
 D'autres guides rejoindront ce site : l'utilisation au quotidien, l'administration d'un établissement et l'API.

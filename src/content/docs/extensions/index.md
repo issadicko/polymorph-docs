@@ -1,5 +1,5 @@
 ---
-title: Les extensions
+title: Les extensions déclaratives
 description: Ce qu'une extension déclarative ajoute à un établissement Polymorph, comment elle s'installe, et ce qu'elle ne peut pas faire.
 ---
 
@@ -60,4 +60,4 @@ Tout autre fichier est refusé. Le manifeste suit le format 1, décrit par un [s
 3. **Livrer** l'archive à l'établissement, par le canal de votre choix.
 4. **Installer** : l'administrateur la téléverse dans Paramétrage → Modules, examine ce qu'elle demande, puis l'installe. Voir [Installation et cycle de vie](installation/).
 
-Pour une première fois, suivez [Votre première extension](premiere-extension/) : un prêt de manuels, du dossier vide à la tuile sur l'accueil.
+Pour une première fois, suivez [Votre première extension déclarative](premiere-extension/) : un prêt de manuels, du dossier vide à la tuile sur l'accueil.

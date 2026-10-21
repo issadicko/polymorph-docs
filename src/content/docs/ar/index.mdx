@@ -1,16 +1,19 @@
 ---
 title: توثيق Polymorph
-description: ‏Polymorph، المنصة التي تتشكّل على هيئة مؤسستك. أدلة لتكييفها، بدءًا بالإضافات.
+description: ‏Polymorph، المنصة التي تتشكّل على هيئة مؤسستك. أدلة لتوسيعها، بدءًا بالإضافات الأصلية.
 template: splash
 hero:
   title: توثيق Polymorph
-  tagline: المنصة التي تتشكّل على هيئة مؤسستك. تشرح هذه الأدلة كيفية تكييفها، بدءًا بالإضافات التي يمكن لأي ناشر كتابتها وتسليمها إلى مؤسسة.
+  tagline: المنصة التي تتشكّل على هيئة مؤسستك. تشرح هذه الأدلة كيفية توسيعها، بدءًا بالإضافات الأصلية التي تأتي بشيفرتها بلغة PHP وجداولها وواجهة برمجتها وشاشاتها.
   image:
     file: ../../../assets/logo.svg
   actions:
-    - text: كتابة إضافة
-      link: extensions/
+    - text: كتابة إضافة أصلية
+      link: natives/
       icon: left-arrow
+    - text: إضافة تصريحية
+      link: extensions/
+      variant: secondary
     - text: الاطلاع على الأمثلة
       link: https://github.com/issadicko/polymorph-docs/tree/main/exemples
       icon: external
@@ -19,14 +22,27 @@ hero:
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-## من أين تبدأ
-
 تُكتب الأدلة بالفرنسية أولًا. وإلى أن تُترجم، تعرض الصفحات التالية النص الفرنسي.
 
+## الإضافات الأصلية
+
+شيفرة PHP وواجهة مستخدم في أرشيف موقّع: جداول خاصة وواجهة برمجة وشاشات حرة وبطاقات في الملفات ومهام مجدولة. ينشرها مشغّل المنصة، وتثبّتها كل مؤسسة كوحدة.
+
 <CardGrid>
-  <LinkCard title="الإضافات" description="ما تضيفه الإضافة إلى المؤسسة، وما لا يمكنها فعله." href="extensions/" />
-  <LinkCard title="إضافتك الأولى" description="سجل لإعارة الكتب، من ملف التعريف إلى التثبيت، خطوة بخطوة." href="extensions/premiere-extension/" />
-  <LinkCard title="ملف التعريف" description="كل مفتاح في polymorph.json، وقيمه وحدوده." href="extensions/manifeste/" />
+  <LinkCard title="الإضافات الأصلية" description="ما تأتي به، من الناشر إلى المؤسسة، ولماذا تُوقَّع." href="natives/" />
+  <LinkCard title="إضافتك الأصلية الأولى" description="العيادة المدرسية لمؤسسة، من ملف التعريف إلى النشر، خطوة بخطوة." href="natives/premiere-extension/" />
+  <LinkCard title="شيفرة الخادم" description="دورة الحياة والجداول وواجهة البرمجة والمهام المجدولة والأوامر ومصادر التقارير." href="natives/serveur/" />
+  <LinkCard title="الواجهة وحزمة التطوير" description="الشاشات والبطاقات كعناصر مخصّصة، وحزمة التطوير الإصدار 1 وأصناف pm-*." href="natives/interface/" />
+  <LinkCard title="التوقيع والتسليم والنشر" description="مفاتيح الناشر والتوقيع وحلقة مفاتيح المنصة والتحديث والسحب." href="natives/livrer/" />
+</CardGrid>
+
+## الإضافات التصريحية
+
+لحاجة أبسط، دون شيفرة مُترجَمة: بيانات وشاشات إدخال مولَّدة وبطاقات وسكربتات، موصوفة في ملف تعريف JSON. يثبّتها مسؤول المؤسسة بنفسه.
+
+<CardGrid>
+  <LinkCard title="الإضافات التصريحية" description="ما تضيفه الإضافة التصريحية إلى المؤسسة، وما لا يمكنها فعله." href="extensions/" />
+  <LinkCard title="إضافتك التصريحية الأولى" description="سجل لإعارة الكتب، من ملف التعريف إلى التثبيت، خطوة بخطوة." href="extensions/premiere-extension/" />
   <LinkCard title="السكربتات ونقاط الربط" description="تعديل رسوم، والتحقق من تسجيل، وإرسال رسالة قصيرة بعد الدفع." href="extensions/hooks/" />
 </CardGrid>
 

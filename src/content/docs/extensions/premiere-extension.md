@@ -1,5 +1,5 @@
 ---
-title: Votre première extension
+title: Votre première extension déclarative
 description: Écrire, vérifier et installer une extension de prêt de manuels, étape par étape.
 ---
 

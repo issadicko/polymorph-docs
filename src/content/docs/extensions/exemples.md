@@ -1,9 +1,9 @@
 ---
 title: Exemples
-description: Quatre extensions complètes, vérifiées avec les contrats de Polymorph, à copier et adapter.
+description: Quatre extensions déclaratives complètes, vérifiées avec les contrats de Polymorph, à copier et adapter.
 ---
 
-Les exemples sont dans le dossier [`exemples`](https://github.com/issadicko/polymorph-docs/tree/main/exemples) du dépôt. Chacun est vérifié à chaque modification de ce dépôt, et l'empaquetage d'un exemple donne une archive installable telle quelle.
+L'exemple d'extension native, l'Infirmerie, est construit pas à pas dans [Votre première extension native](../../natives/premiere-extension/). Les exemples d'extensions déclaratives sont dans le dossier [`exemples`](https://github.com/issadicko/polymorph-docs/tree/main/exemples) du dépôt. Chacun est vérifié à chaque modification de ce dépôt, et l'empaquetage d'un exemple donne une archive installable telle quelle.
 
 ```bash
 npm run empaqueter -- exemples/cantine --sortie livraisons
@@ -20,7 +20,7 @@ npm run empaqueter -- exemples/cantine --sortie livraisons
 
 ## Bibliothèque
 
-[`exemples/bibliotheque`](https://github.com/issadicko/polymorph-docs/tree/main/exemples/bibliotheque) — le prêt de manuels aux apprenants, construit pas à pas dans [Votre première extension](../premiere-extension/).
+[`exemples/bibliotheque`](https://github.com/issadicko/polymorph-docs/tree/main/exemples/bibliotheque) — le prêt de manuels aux apprenants, construit pas à pas dans [Votre première extension déclarative](../premiere-extension/).
 
 - Une entité rattachée à l'**apprenant**, sans limite de nombre.
 - Un état (« Prêté », « Rendu », « Perdu ») qui fait apparaître la date de retour ou les observations.
@@ -42,4 +42,4 @@ npm run empaqueter -- exemples/cantine --sortie livraisons
 
 ## Le modèle
 
-[`modele`](https://github.com/issadicko/polymorph-docs/tree/main/modele) est un point de départ vide : une entité, un écran, des droits. Copiez-le, remplacez `mon-extension` par votre identifiant, et suivez [Votre première extension](../premiere-extension/).
+[`modele`](https://github.com/issadicko/polymorph-docs/tree/main/modele) est un point de départ vide : une entité, un écran, des droits. Copiez-le, remplacez `mon-extension` par votre identifiant, et suivez [Votre première extension déclarative](../premiere-extension/).

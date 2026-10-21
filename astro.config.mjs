@@ -27,11 +27,23 @@ export default defineConfig({
       customCss: ['@fontsource-variable/rubik', './src/styles/polymorph.css'],
       sidebar: [
         {
-          label: 'Extensions',
-          translations: { en: 'Extensions', ar: 'الإضافات' },
+          label: 'Extensions natives',
+          translations: { en: 'Native extensions', ar: 'الإضافات الأصلية' },
+          items: [
+            { slug: 'natives', label: 'Vue d’ensemble', translations: { en: 'Overview', ar: 'نظرة عامة' } },
+            { slug: 'natives/premiere-extension', label: 'Votre première extension native', translations: { en: 'Your first native extension', ar: 'إضافتك الأصلية الأولى' } },
+            { slug: 'natives/manifeste', label: 'Le manifeste natif', translations: { en: 'The native manifest', ar: 'ملف التعريف الأصلي' } },
+            { slug: 'natives/serveur', label: 'Le code serveur', translations: { en: 'Server code', ar: 'شيفرة الخادم' } },
+            { slug: 'natives/interface', label: 'L’interface et le SDK', translations: { en: 'Interface and SDK', ar: 'الواجهة وحزمة التطوير' } },
+            { slug: 'natives/livrer', label: 'Signer, livrer, déployer', translations: { en: 'Sign, ship, deploy', ar: 'التوقيع والتسليم والنشر' } },
+          ],
+        },
+        {
+          label: 'Extensions déclaratives',
+          translations: { en: 'Declarative extensions', ar: 'الإضافات التصريحية' },
           items: [
             { slug: 'extensions', label: 'Vue d’ensemble', translations: { en: 'Overview', ar: 'نظرة عامة' } },
-            { slug: 'extensions/premiere-extension', label: 'Votre première extension', translations: { en: 'Your first extension', ar: 'إضافتك الأولى' } },
+            { slug: 'extensions/premiere-extension', label: 'Votre première extension déclarative', translations: { en: 'Your first declarative extension', ar: 'إضافتك التصريحية الأولى' } },
             {
               label: 'Écrire une extension',
               translations: { en: 'Writing an extension', ar: 'كتابة إضافة' },
@@ -55,18 +67,6 @@ export default defineConfig({
               ],
             },
             { slug: 'extensions/exemples', label: 'Exemples', translations: { en: 'Examples', ar: 'أمثلة' } },
-          ],
-        },
-        {
-          label: 'Extensions natives',
-          translations: { en: 'Native extensions', ar: 'الإضافات الأصلية' },
-          items: [
-            { slug: 'natives', label: 'Vue d’ensemble', translations: { en: 'Overview', ar: 'نظرة عامة' } },
-            { slug: 'natives/premiere-extension', label: 'Votre première extension native', translations: { en: 'Your first native extension', ar: 'إضافتك الأصلية الأولى' } },
-            { slug: 'natives/manifeste', label: 'Le manifeste natif', translations: { en: 'The native manifest', ar: 'ملف التعريف الأصلي' } },
-            { slug: 'natives/serveur', label: 'Le code serveur', translations: { en: 'Server code', ar: 'شيفرة الخادم' } },
-            { slug: 'natives/interface', label: 'L’interface et le SDK', translations: { en: 'Interface and SDK', ar: 'الواجهة وحزمة التطوير' } },
-            { slug: 'natives/livrer', label: 'Signer, livrer, déployer', translations: { en: 'Sign, ship, deploy', ar: 'التوقيع والتسليم والنشر' } },
           ],
         },
       ],

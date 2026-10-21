@@ -2,7 +2,7 @@
   "name": "polymorph-docs",
   "private": true,
   "type": "module",
-  "description": "Documentation de Polymorph : écrire une extension déclarative ou native, et bientôt le reste du produit.",
+  "description": "Documentation de Polymorph : écrire une extension native ou déclarative, et bientôt le reste du produit.",
   "license": "MIT",
   "engines": { "node": ">=22" },
   "scripts": {

@@ -6,8 +6,8 @@
 
 Il commence par ce qu'il faut à un éditeur tiers pour étendre Polymorph :
 
-- une **extension déclarative** ajoute à un établissement ses propres données, écrans, cartes et scripts, sans code compilé ;
-- une **extension native** apporte du code PHP et une interface : ses tables, son API, ses écrans, ses tâches planifiées, en archive signée.
+- une **extension native** apporte du code PHP et une interface : ses tables, son API, ses écrans, ses tâches planifiées, en archive signée ;
+- pour un besoin plus simple, une **extension déclarative** ajoute à un établissement ses propres données, écrans, cartes et scripts, sans code compilé.
 
 Les autres guides du produit le rejoindront.
 
@@ -18,12 +18,12 @@ Le site se lit sur **https://issadicko.github.io/polymorph-docs/**.
 | Dossier | Contenu |
 |---|---|
 | [`src/content/docs`](src/content/docs) | le site de documentation (Astro Starlight), en français ; accueil en arabe et en anglais |
-| [`exemples`](exemples) | quatre extensions déclaratives complètes (Cantine, Bibliothèque, Remise fratrie, SMS de paiement) et une extension native, [Infirmerie](exemples/native/infirmary) |
+| [`exemples`](exemples) | une extension native complète, [Infirmerie](exemples/native/infirmary), et quatre extensions déclaratives (Cantine, Bibliothèque, Remise fratrie, SMS de paiement) |
 | [`modele`](modele) | un point de départ pour une nouvelle extension |
 | [`outils`](outils) | `polymorph-ext`, qui vérifie, empaquette et signe une extension sans serveur Polymorph |
 | [`contrats`](contrats) | les schémas du manifeste (déclaratif et natif) et le catalogue des hooks, publiés par le produit |
 
-## Écrire une extension
+## Installer l'outil
 
 Il faut Node.js 22 ou plus récent.
 
@@ -31,24 +31,29 @@ Il faut Node.js 22 ou plus récent.
 git clone https://github.com/issadicko/polymorph-docs.git
 cd polymorph-docs
 npm install
+```
 
+## Écrire une extension native
+
+```bash
+cp -r exemples/native/infirmary ../mon-extension     # partir de l'exemple, puis changer son identifiant
+node outils/polymorph-ext.mjs key generate --owner "Mon entreprise" --output ~/.polymorph/key.json
+npm run verifier -- ../mon-extension                 # contrôler comme le fera le déploiement
+npm run sign -- ../mon-extension --key ~/.polymorph/key.json
+npm run empaqueter -- ../mon-extension --sortie livraisons
+```
+
+L'exploitant de la plateforme ajoute votre clé publique à son trousseau, puis déploie l'archive ; chaque établissement l'installe ensuite comme un module. Le guide commence par [Les extensions natives](src/content/docs/natives/index.md), puis [Votre première extension native](src/content/docs/natives/premiere-extension.md).
+
+## Écrire une extension déclarative
+
+```bash
 cp -r modele ../mon-extension            # partir du modèle
 npm run verifier -- ../mon-extension     # contrôler comme le fera l'installation
 npm run empaqueter -- ../mon-extension --sortie livraisons
 ```
 
-L'archive `.poly` produite s'installe dans Polymorph, par l'administrateur de l'établissement, dans Paramétrage → Modules. Le guide complet commence par [Les extensions](src/content/docs/extensions/index.md), puis [Votre première extension](src/content/docs/extensions/premiere-extension.md).
-
-## Écrire une extension native
-
-```bash
-node outils/polymorph-ext.mjs key generate --owner "Mon entreprise" --output ~/.polymorph/key.json
-npm run verifier -- exemples/native/infirmary
-npm run sign -- ../mon-extension --key ~/.polymorph/key.json
-npm run empaqueter -- ../mon-extension --sortie livraisons
-```
-
-L'exploitant de la plateforme ajoute votre clé publique à son trousseau, puis déploie l'archive ; chaque établissement l'installe ensuite comme un module. Le guide commence par [Les extensions natives](src/content/docs/natives/index.md).
+L'archive `.poly` produite s'installe dans Polymorph, par l'administrateur de l'établissement, dans Paramétrage → Modules. Le guide complet commence par [Les extensions déclaratives](src/content/docs/extensions/index.md), puis [Votre première extension déclarative](src/content/docs/extensions/premiere-extension.md).
 
 ## Lire le site en local
 
