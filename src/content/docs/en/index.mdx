@@ -1,0 +1,33 @@
+---
+title: Polymorph documentation
+description: Polymorph, the platform that takes the shape of your institution. Guides to adapt it, starting with extensions.
+template: splash
+hero:
+  title: Polymorph documentation
+  tagline: The platform that takes the shape of your institution. These guides explain how to adapt it, starting with the extensions a publisher can write and deliver to an institution.
+  image:
+    file: ../../../assets/logo.svg
+  actions:
+    - text: Write an extension
+      link: extensions/
+      icon: right-arrow
+    - text: See the examples
+      link: https://github.com/issadicko/polymorph-docs/tree/main/exemples
+      icon: external
+      variant: minimal
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Where to start
+
+The guides are written in French first. Until they are translated, the pages below show the French text.
+
+<CardGrid>
+  <LinkCard title="Extensions" description="What an extension adds to an institution, and what it cannot do." href="extensions/" />
+  <LinkCard title="Your first extension" description="A textbook loan register, from the manifest to installation, step by step." href="extensions/premiere-extension/" />
+  <LinkCard title="The manifest" description="Every key of polymorph.json, its values and its limits." href="extensions/manifeste/" />
+  <LinkCard title="Scripts and hooks" description="Adjust a fee, check an enrolment, send a text message after a payment." href="extensions/hooks/" />
+</CardGrid>
+
+More guides will join this site: everyday use, running an institution, and the API.

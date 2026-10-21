@@ -1,0 +1,23 @@
+{
+    "Visites à l'infirmerie": "زيارات العيادة المدرسية",
+    "Une ligne par visite à l'infirmerie, avec la classe et le centre de l'inscription de l'apprenant.": "سطر لكل زيارة للعيادة، مع قسم ومركز تسجيل المتعلم.",
+    "Date de la visite (AAAA-MM-JJ)": "تاريخ الزيارة (YYYY-MM-DD)",
+    "Mois de la visite (AAAA-MM)": "شهر الزيارة (YYYY-MM)",
+    "Heure de la visite (HH:MM)": "وقت الزيارة (HH:MM)",
+    "Motif de la visite": "سبب الزيارة",
+    "BACK_TO_CLASS, SENT_HOME ou DOCTOR": "BACK_TO_CLASS أو SENT_HOME أو DOCTOR",
+    "Le parent a été prévenu": "أُبلغ ولي الأمر",
+    "Code de la classe (inscription de la session)": "رمز القسم (تسجيل الدورة)",
+    "Visite à l'infirmerie enregistrée": "سُجّلت زيارة للعيادة",
+    "Visite à l'infirmerie modifiée": "عُدّلت زيارة للعيادة",
+    "Visite à l'infirmerie supprimée": "حُذفت زيارة للعيادة",
+    "Visites du jour sans parent prévenu": "زيارات اليوم دون إبلاغ ولي الأمر",
+    "apprenant": "المتعلم",
+    "date et heure": "التاريخ والوقت",
+    "motif": "السبب",
+    "soins donnés": "العلاج المقدَّم",
+    "orientation": "التوجيه",
+    "parent prévenu": "إبلاغ ولي الأمر",
+    "date de début": "تاريخ البداية",
+    "date de fin": "تاريخ النهاية"
+}

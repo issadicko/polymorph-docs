@@ -1,0 +1,17 @@
+// Remise fratrie : 10 % dès qu'un autre apprenant, joignable au même numéro, suit déjà une formation.
+// tarif.resoudre est un filtre : le script renvoie le montant retenu.
+
+// Aperçu d'un nouvel apprenant : pas encore de fiche, pas de remise.
+if (apprenant == null) {
+  return montant
+}
+
+// Le numéro du tuteur principal, sinon celui de l'apprenant.
+let principal = find(apprenant.tuteurs, fn(t) { return t.principal == true })
+let numero = principal?.telephone ?: apprenant.telephone
+
+let autres = filter(inscriptionsActives(numero), fn(i) { return i.apprenant_id != apprenant.id })
+if (size(autres) > 0) {
+  return round(montant * 0.9)
+}
+return montant

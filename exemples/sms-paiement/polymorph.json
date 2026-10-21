@@ -1,0 +1,27 @@
+{
+  "$schema": "../../contrats/polymorph.schema.json",
+  "format": 1,
+  "id": "sms-paiement",
+  "version": "1.0.0",
+  "nom": "SMS de paiement",
+  "description": "Après chaque paiement, un SMS confirme le montant reçu et le reste à payer au tuteur principal, ou à l'apprenant.",
+  "editeur": "Exemple de la documentation Polymorph",
+  "compatibilite": { "polymorph": "^1.0" },
+
+  "hooks": [
+    { "hook": "paiement.enregistre", "nom": "Confirmation du paiement par SMS", "script": "scripts/confirmation.kodi" }
+  ],
+
+  "traductions": {
+    "ar": {
+      "SMS de paiement": "رسائل الدفع",
+      "Après chaque paiement, un SMS confirme le montant reçu et le reste à payer au tuteur principal, ou à l'apprenant.": "بعد كل دفعة، تؤكد رسالة قصيرة المبلغ المستلم والمبلغ المتبقي للولي الرئيسي أو للطالب.",
+      "Confirmation du paiement par SMS": "تأكيد الدفع برسالة قصيرة"
+    },
+    "en": {
+      "SMS de paiement": "Payment SMS",
+      "Après chaque paiement, un SMS confirme le montant reçu et le reste à payer au tuteur principal, ou à l'apprenant.": "After each payment, a text message confirms the amount received and the balance due to the main guardian, or to the student.",
+      "Confirmation du paiement par SMS": "Payment confirmation by SMS"
+    }
+  }
+}

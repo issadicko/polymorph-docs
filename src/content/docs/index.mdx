@@ -1,0 +1,32 @@
+---
+title: Documentation de Polymorph
+description: Polymorph, la plateforme qui prend la forme de votre établissement. Guides pour l'adapter, à commencer par les extensions.
+template: splash
+hero:
+  title: Documentation de Polymorph
+  tagline: La plateforme qui prend la forme de votre établissement. Ces guides expliquent comment l'adapter, à commencer par les extensions qu'un éditeur peut écrire et livrer à un établissement.
+  image:
+    file: ../../assets/logo.svg
+  actions:
+    - text: Écrire une extension
+      link: extensions/
+      icon: right-arrow
+    - text: Voir les exemples
+      link: https://github.com/issadicko/polymorph-docs/tree/main/exemples
+      icon: external
+      variant: minimal
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Par où commencer
+
+<CardGrid>
+  <LinkCard title="Les extensions" description="Ce qu'une extension ajoute à un établissement, et ce qu'elle ne peut pas faire." href="extensions/" />
+  <LinkCard title="Votre première extension" description="Un prêt de manuels, du manifeste à l'installation, étape par étape." href="extensions/premiere-extension/" />
+  <LinkCard title="Le manifeste" description="Chaque clé de polymorph.json, ses valeurs et ses limites." href="extensions/manifeste/" />
+  <LinkCard title="Scripts et hooks" description="Ajuster un tarif, contrôler une inscription, prévenir par SMS." href="extensions/hooks/" />
+  <LinkCard title="Les extensions natives" description="Du code PHP et une interface : ses tables, son API, ses écrans, en archive signée." href="natives/" />
+</CardGrid>
+
+D'autres guides rejoindront ce site : l'utilisation au quotidien, l'administration d'un établissement et l'API.

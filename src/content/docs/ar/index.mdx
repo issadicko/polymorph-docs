@@ -1,0 +1,33 @@
+---
+title: توثيق Polymorph
+description: ‏Polymorph، المنصة التي تتشكّل على هيئة مؤسستك. أدلة لتكييفها، بدءًا بالإضافات.
+template: splash
+hero:
+  title: توثيق Polymorph
+  tagline: المنصة التي تتشكّل على هيئة مؤسستك. تشرح هذه الأدلة كيفية تكييفها، بدءًا بالإضافات التي يمكن لأي ناشر كتابتها وتسليمها إلى مؤسسة.
+  image:
+    file: ../../../assets/logo.svg
+  actions:
+    - text: كتابة إضافة
+      link: extensions/
+      icon: left-arrow
+    - text: الاطلاع على الأمثلة
+      link: https://github.com/issadicko/polymorph-docs/tree/main/exemples
+      icon: external
+      variant: minimal
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## من أين تبدأ
+
+تُكتب الأدلة بالفرنسية أولًا. وإلى أن تُترجم، تعرض الصفحات التالية النص الفرنسي.
+
+<CardGrid>
+  <LinkCard title="الإضافات" description="ما تضيفه الإضافة إلى المؤسسة، وما لا يمكنها فعله." href="extensions/" />
+  <LinkCard title="إضافتك الأولى" description="سجل لإعارة الكتب، من ملف التعريف إلى التثبيت، خطوة بخطوة." href="extensions/premiere-extension/" />
+  <LinkCard title="ملف التعريف" description="كل مفتاح في polymorph.json، وقيمه وحدوده." href="extensions/manifeste/" />
+  <LinkCard title="السكربتات ونقاط الربط" description="تعديل رسوم، والتحقق من تسجيل، وإرسال رسالة قصيرة بعد الدفع." href="extensions/hooks/" />
+</CardGrid>
+
+ستنضم أدلة أخرى إلى هذا الموقع: الاستخدام اليومي، وإدارة المؤسسة، وواجهة البرمجة.

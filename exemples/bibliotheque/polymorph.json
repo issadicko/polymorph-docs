@@ -1,0 +1,100 @@
+{
+  "$schema": "../../contrats/polymorph.schema.json",
+  "format": 1,
+  "id": "bibliotheque",
+  "version": "1.0.0",
+  "nom": "Bibliothèque",
+  "description": "Prêt de manuels aux apprenants : ouvrage, dates, retour, avec une carte sur la fiche de l'apprenant.",
+  "editeur": "Exemple de la documentation Polymorph",
+  "compatibilite": { "polymorph": "^1.0" },
+
+  "permissions": {
+    "bibliotheque.voir": "Consulter les prêts de la bibliothèque",
+    "bibliotheque.gerer": "Prêter et reprendre des manuels"
+  },
+  "roles": {
+    "DIRECTION": ["bibliotheque.voir"],
+    "SECRETARIAT": ["bibliotheque.voir", "bibliotheque.gerer"],
+    "ENSEIGNANT": ["bibliotheque.voir"]
+  },
+
+  "entites": [
+    {
+      "code": "pret",
+      "nom": "Prêt",
+      "nom_pluriel": "Prêts de manuels",
+      "rattachement": "APPRENANT",
+      "permissions": { "voir": "bibliotheque.voir", "gerer": "bibliotheque.gerer" },
+      "champs": [
+        { "code": "ouvrage", "libelle": "Ouvrage", "type": "TEXTE", "obligatoire": true },
+        { "code": "cote", "libelle": "Cote", "type": "TEXTE", "aide": "Numéro inscrit sur l'étiquette du livre.", "liste": false },
+        { "code": "date_pret", "libelle": "Prêté le", "type": "DATE", "obligatoire": true },
+        { "code": "retour_prevu", "libelle": "Retour prévu", "type": "DATE" },
+        { "code": "etat", "libelle": "État", "type": "LISTE", "options": ["Prêté", "Rendu", "Perdu"], "obligatoire": true,
+          "valeur_defaut": "\"Prêté\"", "liste": true },
+        { "code": "date_retour", "libelle": "Rendu le", "type": "DATE",
+          "visible_si": "champs.etat == \"Rendu\"", "obligatoire_si": "champs.etat == \"Rendu\"", "liste": false },
+        { "code": "observations", "libelle": "Observations", "type": "TEXTE",
+          "visible_si": "champs.etat == \"Perdu\"", "liste": false }
+      ]
+    }
+  ],
+
+  "application": {
+    "nom": "Bibliothèque",
+    "teinte": { "tuile": "#f1e4d3", "plaque": "#b07a45", "tranche": "#8c5c2e", "detail": "#6f4520" },
+    "pictogramme": [
+      { "element": "rect", "x": 36, "y": 27, "width": 10, "height": 34, "rx": 2, "couleur": "blanc" },
+      { "element": "rect", "x": 36, "y": 33, "width": 10, "height": 3, "couleur": "detail" },
+      { "element": "rect", "x": 48.5, "y": 31, "width": 9, "height": 30, "rx": 2, "couleur": "blanc", "opacity": 0.85 },
+      { "element": "rect", "x": 48.5, "y": 37, "width": 9, "height": 3, "couleur": "detail" },
+      { "element": "rect", "x": 60, "y": 29, "width": 11, "height": 32, "rx": 2, "couleur": "blanc" },
+      { "element": "rect", "x": 60, "y": 35, "width": 11, "height": 3, "couleur": "detail" },
+      { "element": "rect", "x": 33, "y": 61, "width": 44, "height": 3.4, "rx": 1.7, "couleur": "encre" }
+    ],
+    "ecrans": [
+      { "libelle": "Prêts", "icone": "pi-book", "entite": "pret" }
+    ]
+  },
+
+  "emplacements": [
+    { "emplacement": "fiche-apprenant.cartes", "entite": "pret" }
+  ],
+
+  "traductions": {
+    "ar": {
+      "Bibliothèque": "المكتبة",
+      "Prêt de manuels aux apprenants : ouvrage, dates, retour, avec une carte sur la fiche de l'apprenant.": "إعارة الكتب للطلاب: الكتاب والتواريخ والإرجاع، مع بطاقة في ملف الطالب.",
+      "Consulter les prêts de la bibliothèque": "عرض إعارات المكتبة",
+      "Prêter et reprendre des manuels": "إعارة الكتب واستردادها",
+      "Prêt": "إعارة",
+      "Prêts de manuels": "إعارات الكتب",
+      "Prêts": "الإعارات",
+      "Ouvrage": "الكتاب",
+      "Cote": "رقم التصنيف",
+      "Numéro inscrit sur l'étiquette du livre.": "الرقم المكتوب على ملصق الكتاب.",
+      "Prêté le": "تاريخ الإعارة",
+      "Retour prévu": "الإرجاع المتوقع",
+      "État": "الحالة",
+      "Rendu le": "تاريخ الإرجاع",
+      "Observations": "ملاحظات"
+    },
+    "en": {
+      "Bibliothèque": "Library",
+      "Prêt de manuels aux apprenants : ouvrage, dates, retour, avec une carte sur la fiche de l'apprenant.": "Textbook loans to students: book, dates, return, with a card on the student record.",
+      "Consulter les prêts de la bibliothèque": "View library loans",
+      "Prêter et reprendre des manuels": "Lend and take back textbooks",
+      "Prêt": "Loan",
+      "Prêts de manuels": "Textbook loans",
+      "Prêts": "Loans",
+      "Ouvrage": "Book",
+      "Cote": "Shelf mark",
+      "Numéro inscrit sur l'étiquette du livre.": "Number written on the book's label.",
+      "Prêté le": "Lent on",
+      "Retour prévu": "Due back",
+      "État": "Status",
+      "Rendu le": "Returned on",
+      "Observations": "Notes"
+    }
+  }
+}

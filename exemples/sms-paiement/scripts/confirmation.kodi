@@ -1,0 +1,18 @@
+// Après chaque paiement : SMS de confirmation au tuteur principal, sinon à l'apprenant.
+// paiement.enregistre est une action : elle s'exécute après l'enregistrement et ne renvoie rien.
+
+let principal = find(apprenant.tuteurs, fn(t) { return t.principal == true })
+let numero = principal?.telephone ?: apprenant.telephone
+if (numero == null) {
+  print("Aucun numéro pour " + apprenant.nom_complet)
+  return null
+}
+
+let expediteur = etablissement.sigle ?: etablissement.raison_sociale
+let texte = expediteur + " : reçu " + paiement.numero_recu + ", " + montant(paiement.montant) + " pour " + apprenant.prenom + "."
+if (inscription.solde > 0) {
+  texte = texte + " Reste à payer : " + montant(inscription.solde) + "."
+} else {
+  texte = texte + " Formation soldée, merci."
+}
+envoyerSms(numero, texte)

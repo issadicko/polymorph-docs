@@ -1,0 +1,45 @@
+{
+  "$schema": "https://raw.githubusercontent.com/issadicko/polymorph-docs/main/contrats/polymorph.schema.json",
+  "format": 1,
+  "id": "mon-extension",
+  "version": "0.1.0",
+  "nom": "Mon extension",
+  "description": "Ce que l'extension apporte, en une phrase.",
+  "editeur": "Votre nom ou celui de votre société",
+  "compatibilite": { "polymorph": "^1.0" },
+
+  "permissions": {
+    "mon-extension.voir": "Consulter les éléments",
+    "mon-extension.gerer": "Ajouter et modifier les éléments"
+  },
+  "roles": {
+    "DIRECTION": ["mon-extension.voir"],
+    "SECRETARIAT": ["mon-extension.voir", "mon-extension.gerer"]
+  },
+
+  "entites": [
+    {
+      "code": "element",
+      "nom": "Élément",
+      "nom_pluriel": "Éléments",
+      "permissions": { "voir": "mon-extension.voir", "gerer": "mon-extension.gerer" },
+      "champs": [
+        { "code": "libelle", "libelle": "Libellé", "type": "TEXTE", "obligatoire": true },
+        { "code": "date", "libelle": "Date", "type": "DATE" }
+      ]
+    }
+  ],
+
+  "application": {
+    "nom": "Mon extension",
+    "teinte": { "tuile": "#e3e7ee", "plaque": "#8592a8", "tranche": "#67748b", "detail": "#4f5b70" },
+    "ecrans": [
+      { "libelle": "Éléments", "icone": "pi-list", "entite": "element" }
+    ]
+  },
+
+  "traductions": {
+    "ar": {},
+    "en": {}
+  }
+}

@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Tests de l'outil
+        run: npm test
+      - name: Exemples et modèle
+        run: |
+          for dossier in $(ls -d exemples/*/ | grep -v '^exemples/native/$') exemples/native/*/ modele/; do
+            node outils/polymorph-ext.mjs verifier "$dossier"
+          done
+      - name: Site
+        run: npm run build

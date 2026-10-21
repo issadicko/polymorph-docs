@@ -1,0 +1,57 @@
+---
+/**
+ * Catalogue des hooks, lu dans le contrat publié (contrats/hooks.json) : il suit le produit sans réécriture.
+ */
+import catalogue from '../../contrats/hooks.json';
+
+const SORTES: Record<string, string> = { FILTRE: 'Filtre', ACTION: 'Action' };
+const nombre = (n: number) => n.toLocaleString('fr-FR');
+---
+
+{catalogue.hooks.map((hook) => (
+  <section class="hook">
+    <h3 id={hook.code}><code>{hook.code}</code></h3>
+    <p class="hook-meta">
+      <span class:list={['sorte', hook.sorte.toLowerCase()]}>{SORTES[hook.sorte] ?? hook.sorte}</span>
+      <span>{hook.libelle}</span>
+    </p>
+    <p>{hook.description}</p>
+    <ul class="hook-faits">
+      {hook.valeur && <li>Valeur filtrée : <code>{hook.valeur}</code>.</li>}
+      <li>Limites : {nombre(hook.limites.operations)} opérations, {nombre(hook.limites.duree_ms)} ms.</li>
+    </ul>
+    <table>
+      <thead><tr><th>Variable</th><th>Type</th><th>Contenu</th></tr></thead>
+      <tbody>
+        {hook.variables.map((v) => (
+          <tr>
+            <td><code>{v.nom}</code></td>
+            <td>{v.type}</td>
+            <td>
+              {v.description}
+              {v.champs.length > 0 && (
+                <details>
+                  <summary>{v.champs.length} champs</summary>
+                  <ul class="champs">
+                    {v.champs.map((c) => (<li><code>{v.nom}.{c.nom}</code> ({c.type}) : {c.description}</li>))}
+                  </ul>
+                </details>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+))}
+
+<style>
+  .hook { margin-top: 2.5rem; }
+  .hook-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: .5rem; color: var(--sl-color-gray-2); }
+  .sorte { font-size: var(--sl-text-xs); font-weight: 600; padding: .1rem .55rem; border-radius: 999px; border: 1px solid currentColor; }
+  .sorte.filtre { color: var(--sl-color-accent-high); background: var(--sl-color-accent-low); border-color: transparent; }
+  .sorte.action { color: var(--sl-color-orange-high); background: var(--sl-color-orange-low); border-color: transparent; }
+  .hook-faits { margin-top: .5rem; }
+  .champs { margin: .4rem 0 0; padding-inline-start: 1.1rem; font-size: var(--sl-text-sm); }
+  details summary { cursor: pointer; color: var(--sl-color-text-accent); font-size: var(--sl-text-sm); }
+</style>

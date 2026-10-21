@@ -1,0 +1,23 @@
+{
+    "Visites à l'infirmerie": "Infirmary visits",
+    "Une ligne par visite à l'infirmerie, avec la classe et le centre de l'inscription de l'apprenant.": "One row per infirmary visit, with the class and centre of the learner's enrolment.",
+    "Date de la visite (AAAA-MM-JJ)": "Visit date (YYYY-MM-DD)",
+    "Mois de la visite (AAAA-MM)": "Visit month (YYYY-MM)",
+    "Heure de la visite (HH:MM)": "Visit time (HH:MM)",
+    "Motif de la visite": "Reason for the visit",
+    "BACK_TO_CLASS, SENT_HOME ou DOCTOR": "BACK_TO_CLASS, SENT_HOME or DOCTOR",
+    "Le parent a été prévenu": "The parent was informed",
+    "Code de la classe (inscription de la session)": "Class code (enrolment for the session)",
+    "Visite à l'infirmerie enregistrée": "Infirmary visit recorded",
+    "Visite à l'infirmerie modifiée": "Infirmary visit edited",
+    "Visite à l'infirmerie supprimée": "Infirmary visit deleted",
+    "Visites du jour sans parent prévenu": "Today's visits without the parent informed",
+    "apprenant": "learner",
+    "date et heure": "date and time",
+    "motif": "reason",
+    "soins donnés": "care given",
+    "orientation": "outcome",
+    "parent prévenu": "parent informed",
+    "date de début": "start date",
+    "date de fin": "end date"
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "../../contrats/polymorph.schema.json",
+  "format": 1,
+  "id": "remise-fratrie",
+  "version": "1.0.0",
+  "nom": "Remise fratrie",
+  "description": "10 % de remise sur le tarif d'une inscription quand un frère ou une sœur, joignable au même numéro, suit déjà une formation.",
+  "editeur": "Exemple de la documentation Polymorph",
+  "compatibilite": { "polymorph": "^1.0" },
+
+  "hooks": [
+    { "hook": "tarif.resoudre", "nom": "Remise fratrie de 10 %", "script": "scripts/remise.kodi" }
+  ],
+
+  "traductions": {
+    "ar": {
+      "Remise fratrie": "تخفيض الإخوة",
+      "10 % de remise sur le tarif d'une inscription quand un frère ou une sœur, joignable au même numéro, suit déjà une formation.": "تخفيض 10 % على رسوم التسجيل عندما يتابع أخ أو أخت، يمكن الاتصال به على الرقم نفسه، تكوينًا بالفعل.",
+      "Remise fratrie de 10 %": "تخفيض الإخوة بنسبة 10 %"
+    },
+    "en": {
+      "Remise fratrie": "Sibling discount",
+      "10 % de remise sur le tarif d'une inscription quand un frère ou une sœur, joignable au même numéro, suit déjà une formation.": "10% off the enrolment fee when a brother or sister, reachable on the same number, is already enrolled.",
+      "Remise fratrie de 10 %": "10% sibling discount"
+    }
+  }
+}

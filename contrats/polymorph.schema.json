@@ -1,0 +1,556 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Manifeste d'une extension déclarative (format 1)",
+    "description": "Fichier polymorph.json, à la racine de l'archive .poly. Guide : docs/extensions/README.md.",
+    "type": "object",
+    "required": [
+        "format",
+        "id",
+        "version",
+        "nom",
+        "compatibilite"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "Chemin ou adresse de ce schéma, pour l'éditeur ; ignoré à l'installation."
+        },
+        "format": {
+            "const": 1,
+            "description": "Version du format du manifeste."
+        },
+        "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{1,39}$",
+            "description": "Identifiant stable : minuscules, chiffres et tirets. Préfixe de toutes les permissions de l'extension."
+        },
+        "version": {
+            "type": "string",
+            "pattern": "^\\d{1,4}\\.\\d{1,4}\\.\\d{1,4}$",
+            "description": "Version de l'extension (X.Y.Z). Seule une version plus récente remplace une version installée."
+        },
+        "nom": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+        },
+        "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+        },
+        "editeur": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+        },
+        "compatibilite": {
+            "type": "object",
+            "required": [
+                "polymorph"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "polymorph": {
+                    "type": "string",
+                    "pattern": "^(\\^|>=)(\\d+)\\.(\\d+)(?:\\.(\\d+))?$",
+                    "description": "Version du produit demandée : « ^1.0 » (même version majeure, au moins 1.0) ou « >=1.2 ».",
+                    "examples": [
+                        "^1.0"
+                    ]
+                }
+            }
+        },
+        "permissions": {
+            "type": "object",
+            "maxProperties": 20,
+            "description": "Permissions de l'extension et leur libellé, toutes préfixées par son identifiant (« <id>.<action> »).",
+            "propertyNames": {
+                "pattern": "^[a-z][a-z0-9-]{1,39}\\.[a-z][a-z0-9_]{0,39}$"
+            },
+            "additionalProperties": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+            }
+        },
+        "roles": {
+            "type": "object",
+            "description": "Permissions de l'extension données aux rôles à la première installation (l'administrateur les a toutes).",
+            "propertyNames": {
+                "enum": [
+                    "DIRECTION",
+                    "SECRETARIAT",
+                    "CAISSE",
+                    "RESP_PEDAGOGIQUE",
+                    "ENSEIGNANT"
+                ]
+            },
+            "additionalProperties": {
+                "type": "array",
+                "maxItems": 20,
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "entites": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+                "$ref": "#/$defs/entite"
+            }
+        },
+        "hooks": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+                "$ref": "#/$defs/hook"
+            }
+        },
+        "application": {
+            "$ref": "#/$defs/application"
+        },
+        "emplacements": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+                "$ref": "#/$defs/emplacement"
+            }
+        },
+        "traductions": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Traductions des textes de l'extension : texte français => traduction.",
+            "properties": {
+                "ar": {
+                    "$ref": "#/$defs/traductions"
+                },
+                "en": {
+                    "$ref": "#/$defs/traductions"
+                }
+            }
+        }
+    },
+    "$defs": {
+        "entite": {
+            "type": "object",
+            "required": [
+                "code",
+                "nom",
+                "permissions",
+                "champs"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]{0,39}$"
+                },
+                "nom": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                },
+                "nom_pluriel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                },
+                "rattachement": {
+                    "enum": [
+                        "INSCRIPTION",
+                        "APPRENANT",
+                        null
+                    ],
+                    "description": "Fiche à laquelle un enregistrement se rattache ; absent : liste indépendante."
+                },
+                "unique": {
+                    "type": "boolean",
+                    "description": "Un seul enregistrement par inscription ou par apprenant."
+                },
+                "permissions": {
+                    "type": "object",
+                    "required": [
+                        "voir",
+                        "gerer"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "voir": {
+                            "type": "string"
+                        },
+                        "gerer": {
+                            "type": "string"
+                        }
+                    },
+                    "description": "Permissions déclarées par l'extension pour consulter et pour modifier."
+                },
+                "champs": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 30,
+                    "items": {
+                        "$ref": "#/$defs/champ"
+                    }
+                }
+            }
+        },
+        "champ": {
+            "type": "object",
+            "required": [
+                "code",
+                "libelle",
+                "type"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]{0,39}$"
+                },
+                "libelle": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                },
+                "aide": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                },
+                "type": {
+                    "enum": [
+                        "TEXTE",
+                        "NOMBRE",
+                        "DATE",
+                        "LISTE",
+                        "OUI_NON",
+                        "TELEPHONE"
+                    ]
+                },
+                "options": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 50,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                    },
+                    "description": "Valeurs proposées, pour le type LISTE."
+                },
+                "obligatoire": {
+                    "type": "boolean"
+                },
+                "visible_si": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "description": "Règle KodiScript ; elle ne voit que « champs », les valeurs du même enregistrement."
+                },
+                "obligatoire_si": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "description": "Règle KodiScript."
+                },
+                "valeur_defaut": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "description": "Expression KodiScript."
+                },
+                "liste": {
+                    "type": "boolean",
+                    "description": "Colonne de l'écran de liste (par défaut : les quatre premiers champs)."
+                }
+            },
+            "if": {
+                "properties": {
+                    "type": {
+                        "const": "LISTE"
+                    }
+                }
+            },
+            "then": {
+                "required": [
+                    "options"
+                ]
+            }
+        },
+        "hook": {
+            "type": "object",
+            "required": [
+                "hook",
+                "nom",
+                "script"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "hook": {
+                    "enum": [
+                        "tarif.resoudre",
+                        "inscription.avant_creation",
+                        "paiement.enregistre"
+                    ],
+                    "description": "Moment où le script s'exécute (docs/contrats/hooks.json)."
+                },
+                "nom": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                },
+                "script": {
+                    "type": "string",
+                    "pattern": "^scripts/[a-z0-9][a-z0-9_-]{0,59}\\.kodi$"
+                },
+                "ordre": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 999
+                }
+            }
+        },
+        "application": {
+            "type": "object",
+            "required": [
+                "nom",
+                "teinte",
+                "ecrans"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "nom": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 40
+                },
+                "court": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 14
+                },
+                "teinte": {
+                    "type": "object",
+                    "required": [
+                        "tuile",
+                        "plaque",
+                        "tranche",
+                        "detail"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "tuile": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "plaque": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "tranche": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "detail": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        }
+                    }
+                },
+                "pictogramme": {
+                    "type": "array",
+                    "maxItems": 20,
+                    "items": {
+                        "$ref": "#/$defs/forme"
+                    },
+                    "description": "Formes dessinées sur la plaque de l'icône, dans le carré de 27 à 83 en x et de 17 à 73 en y."
+                },
+                "ecrans": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 6,
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "libelle",
+                            "entite"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "libelle": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 40
+                            },
+                            "icone": {
+                                "type": "string",
+                                "pattern": "^pi-[a-z0-9-]{1,30}$",
+                                "description": "Icône PrimeIcons."
+                            },
+                            "entite": {
+                                "type": "string",
+                                "pattern": "^[a-z][a-z0-9_]{0,39}$"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "forme": {
+            "type": "object",
+            "required": [
+                "element",
+                "couleur"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "element": {
+                    "enum": [
+                        "rect",
+                        "circle",
+                        "path"
+                    ]
+                },
+                "couleur": {
+                    "enum": [
+                        "blanc",
+                        "detail",
+                        "encre",
+                        "plaque",
+                        "dore"
+                    ]
+                },
+                "x": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "y": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "width": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "height": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "rx": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "cx": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "cy": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "r": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "d": {
+                    "type": "string",
+                    "pattern": "^[MmLlHhVvCcSsQqTtAaZz0-9 ,.\\-]{1,500}$"
+                },
+                "opacity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                }
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "element": {
+                                "const": "rect"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "x",
+                            "y",
+                            "width",
+                            "height"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "element": {
+                                "const": "circle"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "cx",
+                            "cy",
+                            "r"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "element": {
+                                "const": "path"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "d"
+                        ]
+                    }
+                }
+            ]
+        },
+        "emplacement": {
+            "type": "object",
+            "required": [
+                "emplacement",
+                "entite"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "emplacement": {
+                    "enum": [
+                        "fiche-inscription.cartes",
+                        "fiche-apprenant.cartes"
+                    ]
+                },
+                "entite": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]{0,39}$"
+                }
+            }
+        },
+        "traductions": {
+            "type": "object",
+            "maxProperties": 300,
+            "additionalProperties": {
+                "type": "string",
+                "maxLength": 500
+            }
+        }
+    }
+}

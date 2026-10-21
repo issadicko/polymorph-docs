@@ -1,0 +1,1161 @@
+{
+    "version": "1.0.0",
+    "kodiscript": "v0.2.0",
+    "hooks": [
+        {
+            "code": "tarif.resoudre",
+            "sorte": "FILTRE",
+            "libelle": "Calcul du tarif d'une inscription",
+            "description": "Avant une inscription, ajuste le montant de la grille tarifaire (remise fratrie, tarif propre à un centre…). Le script renvoie le montant retenu ; sans « return », il reste inchangé. Un montant saisi à la main n'est pas modifié.",
+            "valeur": "montant",
+            "sujet": "inscription",
+            "limites": {
+                "operations": 10000,
+                "duree_ms": 200
+            },
+            "variables": [
+                {
+                    "nom": "montant",
+                    "type": "nombre",
+                    "description": "Montant de la grille tarifaire",
+                    "champs": []
+                },
+                {
+                    "nom": "apprenant",
+                    "type": "objet",
+                    "description": "Apprenant (null dans l'aperçu d'un nouvel apprenant)",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "matricule",
+                            "type": "texte",
+                            "description": "Matricule"
+                        },
+                        {
+                            "nom": "nom",
+                            "type": "texte",
+                            "description": "Nom"
+                        },
+                        {
+                            "nom": "prenom",
+                            "type": "texte",
+                            "description": "Prénom(s)"
+                        },
+                        {
+                            "nom": "nom_complet",
+                            "type": "texte",
+                            "description": "Nom et prénom(s)"
+                        },
+                        {
+                            "nom": "genre",
+                            "type": "texte",
+                            "description": "Genre (M, F)"
+                        },
+                        {
+                            "nom": "date_naissance",
+                            "type": "date",
+                            "description": "Date de naissance"
+                        },
+                        {
+                            "nom": "telephone",
+                            "type": "texte",
+                            "description": "Téléphone"
+                        },
+                        {
+                            "nom": "telephone_2",
+                            "type": "texte",
+                            "description": "Second téléphone"
+                        },
+                        {
+                            "nom": "email",
+                            "type": "texte",
+                            "description": "E-mail"
+                        },
+                        {
+                            "nom": "ville",
+                            "type": "texte",
+                            "description": "Ville"
+                        },
+                        {
+                            "nom": "quartier",
+                            "type": "texte",
+                            "description": "Quartier"
+                        },
+                        {
+                            "nom": "categorie_tarifaire_id",
+                            "type": "nombre",
+                            "description": "Catégorie tarifaire de la fiche"
+                        },
+                        {
+                            "nom": "tuteurs",
+                            "type": "liste",
+                            "description": "Tuteurs : nom, prenom, telephone, lien, principal"
+                        },
+                        {
+                            "nom": "champs",
+                            "type": "objet",
+                            "description": "Champs personnalisés : code => valeur"
+                        }
+                    ]
+                },
+                {
+                    "nom": "programme",
+                    "type": "objet",
+                    "description": "Programme",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "nom",
+                            "type": "texte",
+                            "description": "Nom"
+                        },
+                        {
+                            "nom": "public",
+                            "type": "texte",
+                            "description": "Public (ADULTE, ENFANT…)"
+                        }
+                    ]
+                },
+                {
+                    "nom": "session",
+                    "type": "objet",
+                    "description": "Session",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "libelle",
+                            "type": "texte",
+                            "description": "Libellé"
+                        },
+                        {
+                            "nom": "annee",
+                            "type": "nombre",
+                            "description": "Année"
+                        },
+                        {
+                            "nom": "date_debut",
+                            "type": "date",
+                            "description": "Début"
+                        },
+                        {
+                            "nom": "date_fin",
+                            "type": "date",
+                            "description": "Fin"
+                        },
+                        {
+                            "nom": "statut",
+                            "type": "texte",
+                            "description": "Statut"
+                        }
+                    ]
+                },
+                {
+                    "nom": "niveau",
+                    "type": "objet",
+                    "description": "Niveau",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "libelle",
+                            "type": "texte",
+                            "description": "Libellé"
+                        },
+                        {
+                            "nom": "rang",
+                            "type": "nombre",
+                            "description": "Rang dans la filière"
+                        },
+                        {
+                            "nom": "hors_cursus",
+                            "type": "booleen",
+                            "description": "Hors cursus"
+                        },
+                        {
+                            "nom": "filiere",
+                            "type": "objet",
+                            "description": "Filière : id, code, nom"
+                        }
+                    ]
+                },
+                {
+                    "nom": "classe",
+                    "type": "objet",
+                    "description": "Classe (null si l'apprenant n'est pas encore affecté)",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "groupe",
+                            "type": "texte",
+                            "description": "Groupe"
+                        },
+                        {
+                            "nom": "capacite",
+                            "type": "nombre",
+                            "description": "Capacité"
+                        },
+                        {
+                            "nom": "centre_id",
+                            "type": "nombre",
+                            "description": "Centre"
+                        }
+                    ]
+                },
+                {
+                    "nom": "centre",
+                    "type": "objet",
+                    "description": "Centre",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "nom",
+                            "type": "texte",
+                            "description": "Nom"
+                        },
+                        {
+                            "nom": "ville",
+                            "type": "texte",
+                            "description": "Ville"
+                        }
+                    ]
+                },
+                {
+                    "nom": "categorie",
+                    "type": "objet",
+                    "description": "Catégorie tarifaire (null sans catégorie)",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "libelle",
+                            "type": "texte",
+                            "description": "Libellé"
+                        }
+                    ]
+                },
+                {
+                    "nom": "etablissement",
+                    "type": "objet",
+                    "description": "Établissement",
+                    "champs": [
+                        {
+                            "nom": "sigle",
+                            "type": "texte",
+                            "description": "Sigle"
+                        },
+                        {
+                            "nom": "raison_sociale",
+                            "type": "texte",
+                            "description": "Raison sociale"
+                        },
+                        {
+                            "nom": "devise",
+                            "type": "texte",
+                            "description": "Code de la devise (XOF…)"
+                        },
+                        {
+                            "nom": "devise_symbole",
+                            "type": "texte",
+                            "description": "Symbole de la devise (FCFA…)"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "code": "inscription.avant_creation",
+            "sorte": "FILTRE",
+            "libelle": "Avant la création d'une inscription",
+            "description": "Contrôle une inscription avant son enregistrement : refuser(motif) l'empêche et affiche le motif. Le script peut aussi renvoyer l'inscription avec une remise (champs remise et motif_remise) ; les autres champs sont ignorés.",
+            "valeur": "inscription",
+            "sujet": "inscription",
+            "limites": {
+                "operations": 10000,
+                "duree_ms": 200
+            },
+            "variables": [
+                {
+                    "nom": "inscription",
+                    "type": "objet",
+                    "description": "Inscription en cours de création (sans identifiant)",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant (absent avant la création)"
+                        },
+                        {
+                            "nom": "apprenant_id",
+                            "type": "nombre",
+                            "description": "Apprenant"
+                        },
+                        {
+                            "nom": "session_id",
+                            "type": "nombre",
+                            "description": "Session"
+                        },
+                        {
+                            "nom": "niveau_id",
+                            "type": "nombre",
+                            "description": "Niveau"
+                        },
+                        {
+                            "nom": "centre_id",
+                            "type": "nombre",
+                            "description": "Centre"
+                        },
+                        {
+                            "nom": "classe_id",
+                            "type": "nombre",
+                            "description": "Classe"
+                        },
+                        {
+                            "nom": "categorie_tarifaire_id",
+                            "type": "nombre",
+                            "description": "Catégorie tarifaire"
+                        },
+                        {
+                            "nom": "date_inscription",
+                            "type": "date",
+                            "description": "Date d'inscription"
+                        },
+                        {
+                            "nom": "statut",
+                            "type": "texte",
+                            "description": "Statut"
+                        },
+                        {
+                            "nom": "montant_tarif",
+                            "type": "nombre",
+                            "description": "Tarif"
+                        },
+                        {
+                            "nom": "remise",
+                            "type": "nombre",
+                            "description": "Remise"
+                        },
+                        {
+                            "nom": "motif_remise",
+                            "type": "texte",
+                            "description": "Motif de la remise"
+                        },
+                        {
+                            "nom": "montant_du",
+                            "type": "nombre",
+                            "description": "Montant dû"
+                        },
+                        {
+                            "nom": "montant_paye",
+                            "type": "nombre",
+                            "description": "Montant payé"
+                        },
+                        {
+                            "nom": "solde",
+                            "type": "nombre",
+                            "description": "Reste à payer"
+                        },
+                        {
+                            "nom": "champs",
+                            "type": "objet",
+                            "description": "Champs personnalisés : code => valeur"
+                        }
+                    ]
+                },
+                {
+                    "nom": "apprenant",
+                    "type": "objet",
+                    "description": "Apprenant",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "matricule",
+                            "type": "texte",
+                            "description": "Matricule"
+                        },
+                        {
+                            "nom": "nom",
+                            "type": "texte",
+                            "description": "Nom"
+                        },
+                        {
+                            "nom": "prenom",
+                            "type": "texte",
+                            "description": "Prénom(s)"
+                        },
+                        {
+                            "nom": "nom_complet",
+                            "type": "texte",
+                            "description": "Nom et prénom(s)"
+                        },
+                        {
+                            "nom": "genre",
+                            "type": "texte",
+                            "description": "Genre (M, F)"
+                        },
+                        {
+                            "nom": "date_naissance",
+                            "type": "date",
+                            "description": "Date de naissance"
+                        },
+                        {
+                            "nom": "telephone",
+                            "type": "texte",
+                            "description": "Téléphone"
+                        },
+                        {
+                            "nom": "telephone_2",
+                            "type": "texte",
+                            "description": "Second téléphone"
+                        },
+                        {
+                            "nom": "email",
+                            "type": "texte",
+                            "description": "E-mail"
+                        },
+                        {
+                            "nom": "ville",
+                            "type": "texte",
+                            "description": "Ville"
+                        },
+                        {
+                            "nom": "quartier",
+                            "type": "texte",
+                            "description": "Quartier"
+                        },
+                        {
+                            "nom": "categorie_tarifaire_id",
+                            "type": "nombre",
+                            "description": "Catégorie tarifaire de la fiche"
+                        },
+                        {
+                            "nom": "tuteurs",
+                            "type": "liste",
+                            "description": "Tuteurs : nom, prenom, telephone, lien, principal"
+                        },
+                        {
+                            "nom": "champs",
+                            "type": "objet",
+                            "description": "Champs personnalisés : code => valeur"
+                        }
+                    ]
+                },
+                {
+                    "nom": "programme",
+                    "type": "objet",
+                    "description": "Programme",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "nom",
+                            "type": "texte",
+                            "description": "Nom"
+                        },
+                        {
+                            "nom": "public",
+                            "type": "texte",
+                            "description": "Public (ADULTE, ENFANT…)"
+                        }
+                    ]
+                },
+                {
+                    "nom": "session",
+                    "type": "objet",
+                    "description": "Session",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "libelle",
+                            "type": "texte",
+                            "description": "Libellé"
+                        },
+                        {
+                            "nom": "annee",
+                            "type": "nombre",
+                            "description": "Année"
+                        },
+                        {
+                            "nom": "date_debut",
+                            "type": "date",
+                            "description": "Début"
+                        },
+                        {
+                            "nom": "date_fin",
+                            "type": "date",
+                            "description": "Fin"
+                        },
+                        {
+                            "nom": "statut",
+                            "type": "texte",
+                            "description": "Statut"
+                        }
+                    ]
+                },
+                {
+                    "nom": "niveau",
+                    "type": "objet",
+                    "description": "Niveau",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "libelle",
+                            "type": "texte",
+                            "description": "Libellé"
+                        },
+                        {
+                            "nom": "rang",
+                            "type": "nombre",
+                            "description": "Rang dans la filière"
+                        },
+                        {
+                            "nom": "hors_cursus",
+                            "type": "booleen",
+                            "description": "Hors cursus"
+                        },
+                        {
+                            "nom": "filiere",
+                            "type": "objet",
+                            "description": "Filière : id, code, nom"
+                        }
+                    ]
+                },
+                {
+                    "nom": "classe",
+                    "type": "objet",
+                    "description": "Classe (null si l'apprenant n'est pas encore affecté)",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "groupe",
+                            "type": "texte",
+                            "description": "Groupe"
+                        },
+                        {
+                            "nom": "capacite",
+                            "type": "nombre",
+                            "description": "Capacité"
+                        },
+                        {
+                            "nom": "centre_id",
+                            "type": "nombre",
+                            "description": "Centre"
+                        }
+                    ]
+                },
+                {
+                    "nom": "centre",
+                    "type": "objet",
+                    "description": "Centre",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "nom",
+                            "type": "texte",
+                            "description": "Nom"
+                        },
+                        {
+                            "nom": "ville",
+                            "type": "texte",
+                            "description": "Ville"
+                        }
+                    ]
+                },
+                {
+                    "nom": "categorie",
+                    "type": "objet",
+                    "description": "Catégorie tarifaire (null sans catégorie)",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "libelle",
+                            "type": "texte",
+                            "description": "Libellé"
+                        }
+                    ]
+                },
+                {
+                    "nom": "etablissement",
+                    "type": "objet",
+                    "description": "Établissement",
+                    "champs": [
+                        {
+                            "nom": "sigle",
+                            "type": "texte",
+                            "description": "Sigle"
+                        },
+                        {
+                            "nom": "raison_sociale",
+                            "type": "texte",
+                            "description": "Raison sociale"
+                        },
+                        {
+                            "nom": "devise",
+                            "type": "texte",
+                            "description": "Code de la devise (XOF…)"
+                        },
+                        {
+                            "nom": "devise_symbole",
+                            "type": "texte",
+                            "description": "Symbole de la devise (FCFA…)"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "code": "paiement.enregistre",
+            "sorte": "ACTION",
+            "libelle": "Après un encaissement",
+            "description": "Après l'enregistrement d'un paiement, en arrière-plan : SMS de confirmation, alerte… Le script ne peut ni modifier ni bloquer le paiement.",
+            "valeur": null,
+            "sujet": "paiement",
+            "limites": {
+                "operations": 50000,
+                "duree_ms": 2000
+            },
+            "variables": [
+                {
+                    "nom": "paiement",
+                    "type": "objet",
+                    "description": "Paiement enregistré",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "numero_recu",
+                            "type": "texte",
+                            "description": "Numéro du reçu"
+                        },
+                        {
+                            "nom": "montant",
+                            "type": "nombre",
+                            "description": "Montant"
+                        },
+                        {
+                            "nom": "mode",
+                            "type": "texte",
+                            "description": "Mode de paiement (code)"
+                        },
+                        {
+                            "nom": "reference",
+                            "type": "texte",
+                            "description": "Référence"
+                        },
+                        {
+                            "nom": "date_paiement",
+                            "type": "date",
+                            "description": "Date du paiement"
+                        },
+                        {
+                            "nom": "centre_id",
+                            "type": "nombre",
+                            "description": "Centre d'encaissement"
+                        }
+                    ]
+                },
+                {
+                    "nom": "inscription",
+                    "type": "objet",
+                    "description": "Inscription, solde à jour",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant (absent avant la création)"
+                        },
+                        {
+                            "nom": "apprenant_id",
+                            "type": "nombre",
+                            "description": "Apprenant"
+                        },
+                        {
+                            "nom": "session_id",
+                            "type": "nombre",
+                            "description": "Session"
+                        },
+                        {
+                            "nom": "niveau_id",
+                            "type": "nombre",
+                            "description": "Niveau"
+                        },
+                        {
+                            "nom": "centre_id",
+                            "type": "nombre",
+                            "description": "Centre"
+                        },
+                        {
+                            "nom": "classe_id",
+                            "type": "nombre",
+                            "description": "Classe"
+                        },
+                        {
+                            "nom": "categorie_tarifaire_id",
+                            "type": "nombre",
+                            "description": "Catégorie tarifaire"
+                        },
+                        {
+                            "nom": "date_inscription",
+                            "type": "date",
+                            "description": "Date d'inscription"
+                        },
+                        {
+                            "nom": "statut",
+                            "type": "texte",
+                            "description": "Statut"
+                        },
+                        {
+                            "nom": "montant_tarif",
+                            "type": "nombre",
+                            "description": "Tarif"
+                        },
+                        {
+                            "nom": "remise",
+                            "type": "nombre",
+                            "description": "Remise"
+                        },
+                        {
+                            "nom": "motif_remise",
+                            "type": "texte",
+                            "description": "Motif de la remise"
+                        },
+                        {
+                            "nom": "montant_du",
+                            "type": "nombre",
+                            "description": "Montant dû"
+                        },
+                        {
+                            "nom": "montant_paye",
+                            "type": "nombre",
+                            "description": "Montant payé"
+                        },
+                        {
+                            "nom": "solde",
+                            "type": "nombre",
+                            "description": "Reste à payer"
+                        },
+                        {
+                            "nom": "champs",
+                            "type": "objet",
+                            "description": "Champs personnalisés : code => valeur"
+                        }
+                    ]
+                },
+                {
+                    "nom": "apprenant",
+                    "type": "objet",
+                    "description": "Apprenant",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "matricule",
+                            "type": "texte",
+                            "description": "Matricule"
+                        },
+                        {
+                            "nom": "nom",
+                            "type": "texte",
+                            "description": "Nom"
+                        },
+                        {
+                            "nom": "prenom",
+                            "type": "texte",
+                            "description": "Prénom(s)"
+                        },
+                        {
+                            "nom": "nom_complet",
+                            "type": "texte",
+                            "description": "Nom et prénom(s)"
+                        },
+                        {
+                            "nom": "genre",
+                            "type": "texte",
+                            "description": "Genre (M, F)"
+                        },
+                        {
+                            "nom": "date_naissance",
+                            "type": "date",
+                            "description": "Date de naissance"
+                        },
+                        {
+                            "nom": "telephone",
+                            "type": "texte",
+                            "description": "Téléphone"
+                        },
+                        {
+                            "nom": "telephone_2",
+                            "type": "texte",
+                            "description": "Second téléphone"
+                        },
+                        {
+                            "nom": "email",
+                            "type": "texte",
+                            "description": "E-mail"
+                        },
+                        {
+                            "nom": "ville",
+                            "type": "texte",
+                            "description": "Ville"
+                        },
+                        {
+                            "nom": "quartier",
+                            "type": "texte",
+                            "description": "Quartier"
+                        },
+                        {
+                            "nom": "categorie_tarifaire_id",
+                            "type": "nombre",
+                            "description": "Catégorie tarifaire de la fiche"
+                        },
+                        {
+                            "nom": "tuteurs",
+                            "type": "liste",
+                            "description": "Tuteurs : nom, prenom, telephone, lien, principal"
+                        },
+                        {
+                            "nom": "champs",
+                            "type": "objet",
+                            "description": "Champs personnalisés : code => valeur"
+                        }
+                    ]
+                },
+                {
+                    "nom": "programme",
+                    "type": "objet",
+                    "description": "Programme",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "nom",
+                            "type": "texte",
+                            "description": "Nom"
+                        },
+                        {
+                            "nom": "public",
+                            "type": "texte",
+                            "description": "Public (ADULTE, ENFANT…)"
+                        }
+                    ]
+                },
+                {
+                    "nom": "session",
+                    "type": "objet",
+                    "description": "Session",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "libelle",
+                            "type": "texte",
+                            "description": "Libellé"
+                        },
+                        {
+                            "nom": "annee",
+                            "type": "nombre",
+                            "description": "Année"
+                        },
+                        {
+                            "nom": "date_debut",
+                            "type": "date",
+                            "description": "Début"
+                        },
+                        {
+                            "nom": "date_fin",
+                            "type": "date",
+                            "description": "Fin"
+                        },
+                        {
+                            "nom": "statut",
+                            "type": "texte",
+                            "description": "Statut"
+                        }
+                    ]
+                },
+                {
+                    "nom": "niveau",
+                    "type": "objet",
+                    "description": "Niveau",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "libelle",
+                            "type": "texte",
+                            "description": "Libellé"
+                        },
+                        {
+                            "nom": "rang",
+                            "type": "nombre",
+                            "description": "Rang dans la filière"
+                        },
+                        {
+                            "nom": "hors_cursus",
+                            "type": "booleen",
+                            "description": "Hors cursus"
+                        },
+                        {
+                            "nom": "filiere",
+                            "type": "objet",
+                            "description": "Filière : id, code, nom"
+                        }
+                    ]
+                },
+                {
+                    "nom": "centre",
+                    "type": "objet",
+                    "description": "Centre",
+                    "champs": [
+                        {
+                            "nom": "id",
+                            "type": "nombre",
+                            "description": "Identifiant"
+                        },
+                        {
+                            "nom": "code",
+                            "type": "texte",
+                            "description": "Code"
+                        },
+                        {
+                            "nom": "nom",
+                            "type": "texte",
+                            "description": "Nom"
+                        },
+                        {
+                            "nom": "ville",
+                            "type": "texte",
+                            "description": "Ville"
+                        }
+                    ]
+                },
+                {
+                    "nom": "etablissement",
+                    "type": "objet",
+                    "description": "Établissement",
+                    "champs": [
+                        {
+                            "nom": "sigle",
+                            "type": "texte",
+                            "description": "Sigle"
+                        },
+                        {
+                            "nom": "raison_sociale",
+                            "type": "texte",
+                            "description": "Raison sociale"
+                        },
+                        {
+                            "nom": "devise",
+                            "type": "texte",
+                            "description": "Code de la devise (XOF…)"
+                        },
+                        {
+                            "nom": "devise_symbole",
+                            "type": "texte",
+                            "description": "Symbole de la devise (FCFA…)"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "fonctions": [
+        {
+            "nom": "refuser",
+            "signature": "refuser(motif)",
+            "sortes": [
+                "FILTRE"
+            ]
+        },
+        {
+            "nom": "parametre",
+            "signature": "parametre(cle)",
+            "sortes": [
+                "FILTRE",
+                "ACTION"
+            ]
+        },
+        {
+            "nom": "inscriptionsActives",
+            "signature": "inscriptionsActives(telephone)",
+            "sortes": [
+                "FILTRE",
+                "ACTION"
+            ]
+        },
+        {
+            "nom": "effectifClasse",
+            "signature": "effectifClasse(classe_id)",
+            "sortes": [
+                "FILTRE",
+                "ACTION"
+            ]
+        },
+        {
+            "nom": "montant",
+            "signature": "montant(valeur)",
+            "sortes": [
+                "FILTRE",
+                "ACTION"
+            ]
+        },
+        {
+            "nom": "envoyerSms",
+            "signature": "envoyerSms(numero, texte)",
+            "sortes": [
+                "ACTION"
+            ]
+        }
+    ],
+    "parametres": [
+        "devise",
+        "devise_symbole",
+        "indicatif_telephone",
+        "chiffres_numero_local",
+        "sms_expediteur",
+        "format_matricule",
+        "format_recu"
+    ]
+}

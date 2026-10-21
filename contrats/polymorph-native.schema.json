@@ -1,0 +1,422 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Manifeste d'une extension native (format 1)",
+    "description": "Fichier polymorph.json, à la racine de l'archive .poly d'une extension native. Architecture : docs/refonte/07-extensions-natives.md.",
+    "type": "object",
+    "required": [
+        "format",
+        "type",
+        "id",
+        "version",
+        "name",
+        "compatibility"
+    ],
+    "additionalProperties": false,
+    "anyOf": [
+        {
+            "required": [
+                "backend"
+            ]
+        },
+        {
+            "required": [
+                "ui"
+            ]
+        }
+    ],
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "Chemin ou adresse de ce schéma, pour l'éditeur ; ignoré au déploiement."
+        },
+        "format": {
+            "const": 1,
+            "description": "Version du format du manifeste."
+        },
+        "type": {
+            "const": "native",
+            "description": "Extension native : du code PHP et une interface, en archive signée."
+        },
+        "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{1,39}$",
+            "description": "Identifiant stable : préfixe des permissions, des tables, des migrations, des sources de rapports et des éléments de l'interface."
+        },
+        "version": {
+            "type": "string",
+            "pattern": "^\\d{1,4}\\.\\d{1,4}\\.\\d{1,4}$",
+            "description": "Version de l'extension (X.Y.Z). Seule une version plus récente remplace la version déployée."
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Nom affiché, en français (traduit par « translations »)."
+        },
+        "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+        },
+        "publisher": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Éditeur, affiché à côté de la signature."
+        },
+        "compatibility": {
+            "type": "object",
+            "required": [
+                "polymorph"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "polymorph": {
+                    "type": "string",
+                    "pattern": "^(\\^|>=)(\\d+)\\.(\\d+)(?:\\.(\\d+))?$",
+                    "description": "Version du produit demandée : « ^1.0 » (même version majeure, au moins 1.0) ou « >=1.2 ».",
+                    "examples": [
+                        "^1.0"
+                    ]
+                },
+                "php": {
+                    "type": "string",
+                    "pattern": "^(\\^|>=)(\\d+)\\.(\\d+)(?:\\.(\\d+))?$",
+                    "description": "Version de PHP demandée, par exemple « >=8.4 ».",
+                    "examples": [
+                        "^1.0"
+                    ]
+                }
+            }
+        },
+        "dependencies": {
+            "type": "object",
+            "maxProperties": 20,
+            "description": "Modules du produit ou extensions natives nécessaires, avec leur version : installés avant celle-ci dans un établissement.",
+            "propertyNames": {
+                "pattern": "^[a-z][a-z0-9-]{1,39}$"
+            },
+            "additionalProperties": {
+                "type": "string",
+                "pattern": "^(\\^|>=)(\\d+)\\.(\\d+)(?:\\.(\\d+))?$",
+                "description": "Version demandée de la dépendance.",
+                "examples": [
+                    "^1.0"
+                ]
+            }
+        },
+        "permissions": {
+            "type": "object",
+            "maxProperties": 50,
+            "description": "Permissions de l'extension et leur libellé, toutes préfixées par son identifiant (« <id>.<action> »).",
+            "propertyNames": {
+                "pattern": "^[a-z][a-z0-9-]{1,39}\\.[a-z][a-z0-9_]{0,39}$"
+            },
+            "additionalProperties": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+            }
+        },
+        "roles": {
+            "type": "object",
+            "description": "Permissions de l'extension données aux rôles à la première installation (l'administrateur les a toutes).",
+            "propertyNames": {
+                "enum": [
+                    "DIRECTION",
+                    "SECRETARIAT",
+                    "CAISSE",
+                    "RESP_PEDAGOGIQUE",
+                    "ENSEIGNANT"
+                ]
+            },
+            "additionalProperties": {
+                "type": "array",
+                "maxItems": 50,
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "backend": {
+            "type": "object",
+            "required": [
+                "class"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "class": {
+                    "type": "string",
+                    "pattern": "^PolymorphExt\\\\[A-Za-z0-9_\\\\]+$",
+                    "description": "Classe de l'extension, dans l'espace de noms PolymorphExt\\<Id>\\ (fichier backend/src/…) ; elle étend App\\Modules\\Native\\NativeExtension."
+                }
+            }
+        },
+        "ui": {
+            "type": "object",
+            "required": [
+                "module",
+                "sdk"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "module": {
+                    "type": "string",
+                    "pattern": "^ui/[A-Za-z0-9_./-]+\\.m?js$",
+                    "description": "Module ES qui exporte activate(polymorph)."
+                },
+                "sdk": {
+                    "type": "string",
+                    "pattern": "^(\\^|>=)(\\d+)\\.(\\d+)(?:\\.(\\d+))?$",
+                    "description": "Version du SDK de l'interface demandée (SDK de ce produit : 1.0.0).",
+                    "examples": [
+                        "^1.0"
+                    ]
+                }
+            }
+        },
+        "application": {
+            "$ref": "#/$defs/application"
+        },
+        "translations": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Traductions des textes du manifeste et de l'interface : texte français => traduction.",
+            "properties": {
+                "ar": {
+                    "$ref": "#/$defs/translations"
+                },
+                "en": {
+                    "$ref": "#/$defs/translations"
+                }
+            }
+        }
+    },
+    "$defs": {
+        "application": {
+            "type": "object",
+            "required": [
+                "name",
+                "tint",
+                "screens"
+            ],
+            "additionalProperties": false,
+            "description": "Tuile de l'accueil et menu. Ses écrans sont dessinés par l'interface : « ui » est alors requise.",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 40
+                },
+                "short_name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 14,
+                    "description": "Nom court, sous la tuile ; par défaut, les 14 premiers caractères du nom."
+                },
+                "tint": {
+                    "type": "object",
+                    "required": [
+                        "tile",
+                        "plate",
+                        "edge",
+                        "detail"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Couleurs de l'icône : fond de la tuile, plaque, tranche de la plaque, détails du pictogramme.",
+                    "properties": {
+                        "tile": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "plate": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "edge": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        },
+                        "detail": {
+                            "type": "string",
+                            "pattern": "^#[0-9a-fA-F]{6}$"
+                        }
+                    }
+                },
+                "pictogram": {
+                    "type": "array",
+                    "maxItems": 20,
+                    "items": {
+                        "$ref": "#/$defs/shape"
+                    },
+                    "description": "Formes dessinées sur la plaque de l'icône, dans le carré de 27 à 83 en x et de 17 à 73 en y."
+                },
+                "screens": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "label"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "label": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 40
+                            },
+                            "icon": {
+                                "type": "string",
+                                "pattern": "^pi-[a-z0-9-]{1,30}$",
+                                "description": "Icône PrimeIcons."
+                            },
+                            "path": {
+                                "type": "string",
+                                "pattern": "^[a-z0-9][a-z0-9/-]{0,80}$|^$",
+                                "description": "Chemin sous /modules/<id>/, inscrit par l'interface avec polymorph.screen(path, element)."
+                            },
+                            "permission": {
+                                "type": "string",
+                                "description": "Permission de l'extension ; par défaut, la première déclarée."
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "shape": {
+            "type": "object",
+            "required": [
+                "element",
+                "color"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "element": {
+                    "enum": [
+                        "rect",
+                        "circle",
+                        "path"
+                    ]
+                },
+                "color": {
+                    "enum": [
+                        "white",
+                        "detail",
+                        "ink",
+                        "plate",
+                        "gold"
+                    ]
+                },
+                "x": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "y": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "width": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "height": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "rx": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "cx": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "cy": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "r": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 110
+                },
+                "d": {
+                    "type": "string",
+                    "pattern": "^[MmLlHhVvCcSsQqTtAaZz0-9 ,.\\-]{1,500}$"
+                },
+                "opacity": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                }
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "element": {
+                                "const": "rect"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "x",
+                            "y",
+                            "width",
+                            "height"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "element": {
+                                "const": "circle"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "cx",
+                            "cy",
+                            "r"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "element": {
+                                "const": "path"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "d"
+                        ]
+                    }
+                }
+            ]
+        },
+        "translations": {
+            "type": "object",
+            "maxProperties": 1000,
+            "additionalProperties": {
+                "type": "string",
+                "maxLength": 500
+            }
+        }
+    }
+}

@@ -1,0 +1,125 @@
+---
+title: Scripts et hooks
+description: Attacher des scripts KodiScript aux hooks de Polymorph — ajuster un tarif, contrôler une inscription, prévenir après un paiement.
+---
+
+import CatalogueHooks from '../../../components/CatalogueHooks.astro';
+
+Un **hook** est un moment de la vie de l'établissement où Polymorph exécute des scripts : au calcul du tarif d'une inscription, juste avant qu'une inscription soit enregistrée, après chaque paiement. Une extension y attache ses scripts, écrits en [KodiScript](../kodiscript/).
+
+Ce sont les mêmes hooks que les **automatisations** que l'établissement écrit lui-même dans Paramétrage → Automatisations. Les scripts d'une extension y apparaissent en lecture seule, avec leur journal d'exécution.
+
+## Déclarer un script
+
+```json
+"hooks": [
+  { "hook": "tarif.resoudre", "nom": "Remise fratrie de 10 %", "script": "scripts/remise.kodi", "ordre": 0 }
+]
+```
+
+| Clé | Obligatoire | Contenu |
+|---|---|---|
+| `hook` | oui | le code d'un hook du [catalogue](#catalogue) |
+| `nom` | oui | nom du script, 120 caractères au plus : il s'affiche à l'examen de l'archive et dans le Studio |
+| `script` | oui | le fichier dans l'archive : `scripts/<nom>.kodi`, en minuscules, chiffres, `-` et `_` |
+| `ordre` | non | de 0 à 999 ; 0 par défaut. Les scripts d'un même hook s'exécutent du plus petit au plus grand |
+
+Une extension déclare 10 scripts au plus, de 20 000 caractères chacun. Un fichier `scripts/*.kodi` que rien ne déclare est inutile : l'outil le signale.
+
+## Filtres et actions
+
+| | Filtre | Action |
+|---|---|---|
+| Moment | pendant l'opération, avant son enregistrement | après l'enregistrement, en arrière-plan |
+| Entrée | une valeur et son contexte | le contexte de l'événement |
+| Sortie | la valeur, modifiée ou non | aucune |
+| Peut bloquer | oui, avec `refuser("motif")` : l'opération échoue et l'utilisateur lit le motif | non |
+| Fonctions à effet | aucune | `envoyerSms` |
+| En cas d'erreur ou de dépassement | la valeur d'origine est conservée ; l'erreur est journalisée et signalée dans le Studio | l'erreur est journalisée, sans nouvelle tentative |
+
+Un script en erreur ne bloque jamais le guichet : seul un `refuser` explicite arrête une opération.
+
+Plusieurs scripts sur un même hook, ceux des extensions comme ceux de l'établissement, s'exécutent dans l'ordre. Pour un filtre, la valeur renvoyée par l'un est l'entrée du suivant.
+
+## Ce qu'un filtre renvoie
+
+Un filtre qui ne renvoie rien laisse la valeur inchangée. Sinon, Polymorph contrôle ce qu'il renvoie :
+
+| Hook | Valeur acceptée |
+|---|---|
+| `tarif.resoudre` | un nombre positif ou nul, arrondi à l'unité |
+| `inscription.avant_creation` | l'inscription, dont seuls `remise` (de 0 au tarif) et `motif_remise` (255 caractères au plus) sont repris ; ses autres champs sont ignorés |
+
+Une valeur refusée compte comme une erreur : la valeur d'origine est conservée, et l'erreur apparaît dans le journal.
+
+## Fonctions du produit
+
+En plus des [fonctions natives de KodiScript](../kodiscript/#fonctions-natives), un script dispose de ces fonctions :
+
+| Fonction | Hooks | Rôle |
+|---|---|---|
+| `refuser(motif)` | filtres | arrête l'opération et affiche le motif à l'utilisateur |
+| `parametre(cle)` | tous | lit un paramètre de l'établissement : `devise`, `devise_symbole`, `indicatif_telephone`, `chiffres_numero_local`, `sms_expediteur`, `format_matricule`, `format_recu`. Toute autre clé donne `null` |
+| `inscriptionsActives(telephone)` | tous | les inscriptions en cours des apprenants joignables à ce numéro, le leur ou celui d'un tuteur (100 au plus). Chacune donne `id`, `apprenant_id`, `matricule`, `nom_complet`, `session_id`, `session`, `niveau_id`, `niveau`, `centre_id`, `statut`, `montant_du` et `solde` |
+| `effectifClasse(classe_id)` | tous | le nombre d'inscriptions comptées dans une classe |
+| `montant(valeur)` | tous | un montant écrit comme dans l'application, avec la devise : `25 000 FCFA` |
+| `envoyerSms(numero, texte)` | actions | envoie un SMS ; renvoie `false` si le numéro est invalide, le texte vide ou un plafond atteint |
+
+Les plafonds de SMS sont de 5 par exécution et de 200 par jour pour un même script. Tant que l'établissement n'a pas configuré de fournisseur, les SMS sont simulés : ils apparaissent dans son journal sans partir.
+
+`print(…)` écrit dans le journal d'exécution, visible dans le Studio : 50 lignes au plus, de 500 caractères chacune.
+
+## Exemples
+
+Remise fratrie, sur `tarif.resoudre` ([exemple complet](https://github.com/issadicko/polymorph-docs/tree/main/exemples/remise-fratrie)) :
+
+```js
+// Aperçu d'un nouvel apprenant : pas encore de fiche, pas de remise.
+if (apprenant == null) {
+  return montant
+}
+let principal = find(apprenant.tuteurs, fn(t) { return t.principal == true })
+let numero = principal?.telephone ?: apprenant.telephone
+let autres = filter(inscriptionsActives(numero), fn(i) { return i.apprenant_id != apprenant.id })
+if (size(autres) > 0) {
+  return round(montant * 0.9)
+}
+return montant
+```
+
+Âge minimum, sur `inscription.avant_creation` :
+
+```js
+if (programme.public == "ENFANT" && age(apprenant.date_naissance) < 6) {
+  refuser("Ce programme accueille les enfants à partir de 6 ans.")
+}
+return inscription
+```
+
+SMS après un paiement, sur `paiement.enregistre` ([exemple complet](https://github.com/issadicko/polymorph-docs/tree/main/exemples/sms-paiement)) :
+
+```js
+let principal = find(apprenant.tuteurs, fn(t) { return t.principal == true })
+let numero = principal?.telephone ?: apprenant.telephone
+let texte = (etablissement.sigle ?: etablissement.raison_sociale) + " : reçu " + paiement.numero_recu + ", " + montant(paiement.montant) + "."
+if (inscription.solde > 0) {
+  texte = texte + " Reste à payer : " + montant(inscription.solde) + "."
+}
+envoyerSms(numero, texte)
+```
+
+## Mettre au point un script
+
+L'outil de vérification contrôle la syntaxe, pas le comportement. Pour essayer un script sur de vraies données, sans rien modifier :
+
+1. dans un établissement d'essai, ouvrez **Paramétrage → Automatisations** et créez une automatisation sur le même hook ;
+2. collez-y le script et lancez le **banc d'essai** sur une inscription ou un paiement réels : il exécute le script en simulation, remplace les SMS par une liste de ce qui aurait été envoyé, et affiche le résultat, la sortie de `print`, les opérations et la durée ;
+3. une fois le script au point, recopiez-le dans `scripts/` et supprimez l'automatisation d'essai.
+
+## Catalogue
+
+Les hooks de Polymorph 1.0, avec leurs variables. Ce catalogue est tiré du contrat [`hooks.json`](https://github.com/issadicko/polymorph-docs/blob/main/contrats/hooks.json), qui fait foi.
+
+Les montants sont des entiers dans la devise de l'établissement, les dates du texte ISO (`2026-10-21`). Un objet absent vaut `null` : protégez son accès avec `?.`.
+
+<CatalogueHooks />

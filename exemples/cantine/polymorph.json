@@ -1,0 +1,96 @@
+{
+  "$schema": "../../contrats/polymorph.schema.json",
+  "format": 1,
+  "id": "cantine",
+  "version": "1.0.0",
+  "nom": "Cantine",
+  "description": "Abonnement des apprenants à la cantine : formule, jours, régime et allergies, avec une carte sur la fiche inscription.",
+  "editeur": "Exemple fourni avec le produit",
+  "compatibilite": { "polymorph": "^1.0" },
+
+  "permissions": {
+    "cantine.voir": "Consulter les abonnés de la cantine",
+    "cantine.gerer": "Abonner des apprenants à la cantine"
+  },
+  "roles": {
+    "DIRECTION": ["cantine.voir"],
+    "SECRETARIAT": ["cantine.voir", "cantine.gerer"]
+  },
+
+  "entites": [
+    {
+      "code": "abonnement",
+      "nom": "Cantine",
+      "nom_pluriel": "Abonnés de la cantine",
+      "rattachement": "INSCRIPTION",
+      "unique": true,
+      "permissions": { "voir": "cantine.voir", "gerer": "cantine.gerer" },
+      "champs": [
+        { "code": "formule", "libelle": "Formule", "type": "LISTE", "options": ["Déjeuner", "Déjeuner et goûter"], "obligatoire": true },
+        { "code": "jours", "libelle": "Jours", "type": "LISTE", "options": ["Tous les jours", "Lundi, mercredi, vendredi", "Mardi, jeudi"],
+          "valeur_defaut": "\"Tous les jours\"" },
+        { "code": "regime", "libelle": "Régime", "type": "LISTE", "options": ["Normal", "Sans porc", "Végétarien"] },
+        { "code": "allergies", "libelle": "Allergies", "type": "TEXTE", "aide": "Aliments à éviter, s'il y en a." },
+        { "code": "allergie_grave", "libelle": "Allergie grave", "type": "OUI_NON", "visible_si": "champs.allergies != null", "liste": false },
+        { "code": "contact_urgence", "libelle": "Contact en cas d'urgence", "type": "TELEPHONE",
+          "visible_si": "champs.allergie_grave == true", "obligatoire_si": "champs.allergie_grave == true", "liste": false },
+        { "code": "debut", "libelle": "Début", "type": "DATE", "liste": false }
+      ]
+    }
+  ],
+
+  "application": {
+    "nom": "Cantine",
+    "teinte": { "tuile": "#e3efc4", "plaque": "#8cb33f", "tranche": "#6c9025", "detail": "#577a17" },
+    "pictogramme": [
+      { "element": "circle", "cx": 55, "cy": 45, "r": 15.5, "couleur": "blanc" },
+      { "element": "circle", "cx": 55, "cy": 45, "r": 9.5, "couleur": "detail", "opacity": 0.35 },
+      { "element": "rect", "x": 33, "y": 29, "width": 3.6, "height": 32, "rx": 1.8, "couleur": "blanc" },
+      { "element": "rect", "x": 30.5, "y": 29, "width": 8.6, "height": 9, "rx": 2.4, "couleur": "blanc" },
+      { "element": "rect", "x": 73.5, "y": 29, "width": 4.2, "height": 32, "rx": 2.1, "couleur": "blanc" },
+      { "element": "rect", "x": 73.5, "y": 29, "width": 5.4, "height": 14, "rx": 2.7, "couleur": "blanc" }
+    ],
+    "ecrans": [
+      { "libelle": "Abonnés", "icone": "pi-users", "entite": "abonnement" }
+    ]
+  },
+
+  "emplacements": [
+    { "emplacement": "fiche-inscription.cartes", "entite": "abonnement" }
+  ],
+
+  "traductions": {
+    "ar": {
+      "Cantine": "المطعم",
+      "Abonnement des apprenants à la cantine : formule, jours, régime et allergies, avec une carte sur la fiche inscription.": "اشتراك الطلاب في المطعم: الوجبة والأيام والنظام الغذائي والحساسية، مع بطاقة في ملف التسجيل.",
+      "Consulter les abonnés de la cantine": "عرض المشتركين في المطعم",
+      "Abonner des apprenants à la cantine": "إشراك الطلاب في المطعم",
+      "Abonnés de la cantine": "المشتركون في المطعم",
+      "Abonnés": "المشتركون",
+      "Formule": "الوجبة",
+      "Jours": "الأيام",
+      "Régime": "النظام الغذائي",
+      "Allergies": "الحساسية",
+      "Aliments à éviter, s'il y en a.": "الأطعمة الواجب تجنبها، إن وجدت.",
+      "Allergie grave": "حساسية شديدة",
+      "Contact en cas d'urgence": "رقم الاتصال في حالات الطوارئ",
+      "Début": "البداية"
+    },
+    "en": {
+      "Cantine": "Canteen",
+      "Abonnement des apprenants à la cantine : formule, jours, régime et allergies, avec une carte sur la fiche inscription.": "Student canteen subscriptions: meal plan, days, diet and allergies, with a card on the enrolment record.",
+      "Consulter les abonnés de la cantine": "View canteen subscribers",
+      "Abonner des apprenants à la cantine": "Subscribe students to the canteen",
+      "Abonnés de la cantine": "Canteen subscribers",
+      "Abonnés": "Subscribers",
+      "Formule": "Meal plan",
+      "Jours": "Days",
+      "Régime": "Diet",
+      "Allergies": "Allergies",
+      "Aliments à éviter, s'il y en a.": "Foods to avoid, if any.",
+      "Allergie grave": "Severe allergy",
+      "Contact en cas d'urgence": "Emergency contact",
+      "Début": "Start"
+    }
+  }
+}

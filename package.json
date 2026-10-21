@@ -1,0 +1,25 @@
+{
+  "name": "polymorph-docs",
+  "private": true,
+  "type": "module",
+  "description": "Documentation de Polymorph : écrire une extension déclarative ou native, et bientôt le reste du produit.",
+  "license": "MIT",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "verifier": "node outils/polymorph-ext.mjs verifier",
+    "empaqueter": "node outils/polymorph-ext.mjs empaqueter",
+    "sign": "node outils/polymorph-ext.mjs sign",
+    "test": "node --test outils/*.test.mjs"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "0.42.6",
+    "@fontsource-variable/rubik": "5.3.0",
+    "@issadicko/kodi-script": "0.4.0",
+    "ajv": "8.20.0",
+    "astro": "7.3.8",
+    "fflate": "0.8.3"
+  }
+}

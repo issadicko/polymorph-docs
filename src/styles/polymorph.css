@@ -1,0 +1,14 @@
+/* Couleurs et police de Polymorph : sarcelle pour l'action, Rubik pour le texte (voir DESIGN.md du produit). */
+:root {
+  --sl-font: 'Rubik Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Arabic', sans-serif;
+  --sl-color-accent-low: #0b3532;
+  --sl-color-accent: #2dd4bf;
+  --sl-color-accent-high: #ccfbf1;
+}
+:root[data-theme='light'] {
+  --sl-color-accent-low: #ccfbf1;
+  --sl-color-accent: #0f766e;
+  --sl-color-accent-high: #134e4a;
+}
+.site-title { font-weight: 700; letter-spacing: -0.02em; }
+.site-title img { border-radius: 24%; }
