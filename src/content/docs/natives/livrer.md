@@ -65,6 +65,8 @@ php artisan extension:deployed             # extensions déployées, version, si
 php artisan extension:deployed --rebuild   # reconstruit le registre compilé depuis la base
 ```
 
+Sans terminal, l'exploitant fait les mêmes gestes dans la **tour de contrôle**, la console web de la plateforme. Son écran Extensions natives sert à téléverser et déployer une archive, revenir à la version précédente ou retirer une extension. Il tient aussi le trousseau : ajouter et révoquer une clé. Les contrôles sont les mêmes que ceux des commandes, et chaque geste est inscrit au journal de la plateforme.
+
 ### En développement
 
 Pour essayer une extension sans la signer : `NATIVE_EXTENSIONS_ALLOW_UNSIGNED=true` dans `backend/.env`. Ce réglage n'a d'effet qu'avec `APP_ENV=local` ; ailleurs, une extension non signée est toujours refusée. Paramétrage → Modules l'indique « Non signée (développement) ».
