@@ -46,7 +46,7 @@ Une plateforme Polymorph héberge plusieurs établissements, chacun dans son pro
 
 | | Plateforme | Établissement |
 |---|---|---|
-| Qui | l'exploitant de la plateforme | l'administrateur de l'établissement |
+| Qui | l'exploitant de la plateforme | l'administrateur de l'établissement ; l'exploitant, pour son compte, sur une plateforme qui héberge plusieurs établissements |
 | Geste | **déployer** le code : `php artisan extension:deploy infirmary-1.0.0.poly` | **installer** l'extension, comme un module : Paramétrage → Modules |
 | Effet | contrôle de la signature et de l'archive, copie du code | tables dans le schéma de l'établissement, droits, rôles, activation |
 | Annulation | `php artisan extension:rollback`, retour à la version précédente ; `php artisan extension:remove`, quand plus aucun établissement ne l'utilise | désactiver (les données restent), purger (en ligne de commande) |

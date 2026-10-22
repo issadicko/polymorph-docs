@@ -5,6 +5,8 @@ description: Comment un établissement examine, installe, met à jour, désactiv
 
 Une extension s'installe **établissement par établissement**. C'est l'administrateur de l'établissement qui la téléverse : la permission « Installer, activer et désactiver les modules » (`modules.gerer`) le permet. Tout se passe dans **Paramétrage → Modules**, partie « Extensions ».
 
+Sur une plateforme qui héberge **plusieurs établissements**, c'est l'exploitant de la plateforme qui la téléverse, pour le compte de l'établissement : dans la tour de contrôle, onglet **Modules** de la fiche de l'établissement. L'examen, l'installation et la désinstallation sont les mêmes. L'établissement voit ses extensions, sans pouvoir en ajouter ni en retirer.
+
 ## 1. Examen
 
 L'administrateur choisit l'archive `.poly`. Polymorph la contrôle entièrement, puis affiche ce qu'elle demande, sans encore rien installer :

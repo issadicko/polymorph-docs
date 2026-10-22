@@ -5,7 +5,7 @@ description: Ce qu'une extension déclarative ajoute à un établissement Polymo
 
 Une **extension déclarative** ajoute à un établissement Polymorph ce que le produit ne prévoit pas pour lui : une cantine, une bibliothèque, une remise propre à l'établissement, un SMS après chaque paiement. Elle **décrit** ce qu'elle apporte dans un fichier JSON ; Polymorph le dessine, le contrôle et l'exécute. Elle ne contient aucun code compilé.
 
-N'importe quel éditeur peut en écrire une : un prestataire, l'informaticien d'un établissement, un intégrateur. L'administrateur de l'établissement l'installe lui-même, après avoir vu ce qu'elle demande.
+N'importe quel éditeur peut en écrire une : un prestataire, l'informaticien d'un établissement, un intégrateur. L'administrateur de l'établissement l'installe lui-même, après avoir vu ce qu'elle demande. Sur une plateforme qui héberge plusieurs établissements, l'exploitant le fait pour lui.
 
 ## Ce qu'une extension apporte
 
