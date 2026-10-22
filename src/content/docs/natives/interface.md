@@ -96,6 +96,7 @@ try {
 | `fiche-apprenant.cartes` | `{ apprenant }` | cartes de la fiche apprenant |
 | `fiche-inscription.cartes` | `{ inscription }` | cartes de la fiche inscription |
 | `fiche-inscription.actions` | `{ inscription }` | boutons d'action de la fiche inscription |
+| `fiche-demande.cartes` | `{ demande }` | cartes du volet d'une demande d'inscription en ligne |
 | `tableau-de-bord.aujourdhui` | `{}` | cartes du tableau de bord du jour |
 | `parametrage.sections` | `{}` | sections du Paramétrage |
 
