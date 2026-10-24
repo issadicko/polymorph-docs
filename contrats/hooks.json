@@ -126,6 +126,11 @@
                             "nom": "public",
                             "type": "texte",
                             "description": "Public (ADULTE, ENFANT…)"
+                        },
+                        {
+                            "nom": "sms_recipient",
+                            "type": "texte",
+                            "description": "Destinataire des SMS (LEARNER, GUARDIAN, GUARDIAN_WHILE_MINOR)"
                         }
                     ]
                 },
@@ -523,6 +528,11 @@
                             "nom": "public",
                             "type": "texte",
                             "description": "Public (ADULTE, ENFANT…)"
+                        },
+                        {
+                            "nom": "sms_recipient",
+                            "type": "texte",
+                            "description": "Destinataire des SMS (LEARNER, GUARDIAN, GUARDIAN_WHILE_MINOR)"
                         }
                     ]
                 },
@@ -962,6 +972,11 @@
                             "nom": "public",
                             "type": "texte",
                             "description": "Public (ADULTE, ENFANT…)"
+                        },
+                        {
+                            "nom": "sms_recipient",
+                            "type": "texte",
+                            "description": "Destinataire des SMS (LEARNER, GUARDIAN, GUARDIAN_WHILE_MINOR)"
                         }
                     ]
                 },
