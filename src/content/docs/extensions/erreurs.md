@@ -15,7 +15,7 @@ Chaque erreur commence par le chemin de la clé fautive. Par exemple, `entites[0
 | `compatibilite.polymorph` : format invalide | `1.0`, `~1.0`, `1.x`… | `^1.0` ou `>=1.2` |
 | Extension prévue pour la version … du produit | la contrainte exclut la version de l'établissement | visez la version majeure : `^1.0` |
 | `permissions.voir` : une permission s'écrit « id.action » | permission sans le préfixe de l'extension | `"cantine.voir"` |
-| `roles` : valeur non reconnue (« ADMIN ») | rôle inconnu, ou `ADMIN`, qui a déjà tout | un rôle de la liste : `DIRECTION`, `SECRETARIAT`, `CAISSE`, `RESP_PEDAGOGIQUE`, `ENSEIGNANT` |
+| `roles` : valeur non reconnue (« ADMIN ») | rôle inconnu, ou `ADMIN`, qui a déjà tout | un rôle de la liste : `DIRECTION`, `SECRETARIAT`, `CAISSE`, `RESP_PEDAGOGIQUE`, `ENSEIGNANT`, `COMPTABLE` |
 | la permission « … » n'est pas déclarée par l'extension | un rôle ou une entité désigne une permission absente de `permissions` | déclarez-la, ou corrigez la faute de frappe |
 | clé non prévue (« … ») | clé inconnue, souvent une faute de frappe : `entite` pour `entites` | le nom exact de la clé ; voir [Le manifeste](../manifeste/) |
 

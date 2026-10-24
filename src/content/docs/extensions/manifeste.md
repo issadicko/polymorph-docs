@@ -76,6 +76,7 @@ Toute autre clé est refusée, à tous les niveaux du manifeste, par le schéma,
 | `CAISSE` | le guichet : encaissements, reçus |
 | `RESP_PEDAGOGIQUE` | le responsable pédagogique : évaluations, notes, délibérations |
 | `ENSEIGNANT` | les enseignants : appel et notes de leurs classes |
+| `COMPTABLE` | le comptable, interne ou expert-comptable : paiements, rapports financiers et comptabilité, sans la scolarité |
 
 - Seules les permissions déclarées par l'extension peuvent être données.
 - L'administrateur (`ADMIN`) a toutes les permissions : il n'apparaît pas ici.

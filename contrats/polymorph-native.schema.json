@@ -127,7 +127,8 @@
                     "SECRETARIAT",
                     "CAISSE",
                     "RESP_PEDAGOGIQUE",
-                    "ENSEIGNANT"
+                    "ENSEIGNANT",
+                    "COMPTABLE"
                 ]
             },
             "additionalProperties": {

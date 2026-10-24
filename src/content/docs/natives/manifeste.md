@@ -47,7 +47,7 @@ Les clés sont en anglais ; les textes affichés sont en français, traduits par
 ```
 
 - 50 permissions au plus, chacune écrite `<id>.<action>`.
-- `roles` donne des permissions de l'extension aux rôles du produit, **à la première installation seulement** : l'établissement les ajuste ensuite. Rôles possibles : `DIRECTION`, `SECRETARIAT`, `CAISSE`, `RESP_PEDAGOGIQUE`, `ENSEIGNANT`. L'administrateur a toujours tout.
+- `roles` donne des permissions de l'extension aux rôles du produit, **à la première installation seulement** : l'établissement les ajuste ensuite. Rôles possibles : `DIRECTION`, `SECRETARIAT`, `CAISSE`, `RESP_PEDAGOGIQUE`, `ENSEIGNANT`, `COMPTABLE`. L'administrateur a toujours tout.
 
 ## Réglages
 
