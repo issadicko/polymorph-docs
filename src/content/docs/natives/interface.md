@@ -100,6 +100,7 @@ try {
 | `class.timetable` | `{ classe }` | boutons au-dessus de l'emploi du temps d'une classe |
 | `payment.cards` | `{ paiement }` | cartes sous le détail d'un paiement |
 | `cash-closure.actions` | `{ arrete }` | boutons dans la ligne d'un arrêté de caisse |
+| `header.actions` | `{}` | boutons ronds de 44 px dans l'en-tête, avant la cloche |
 | `tableau-de-bord.aujourdhui` | `{}` | cartes du tableau de bord du jour |
 | `parametrage.sections` | `{}` | sections du Paramétrage |
 
